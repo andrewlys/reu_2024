@@ -1,0 +1,1282 @@
+
+\documentclass[openany, amssymb, psamsfonts]{amsart}
+\usepackage{mathrsfs,comment}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage[all,arc,2cell]{xy}
+\UseAllTwocells
+\usepackage{enumerate}
+%%% hyperref stuff is taken from AGT style file
+\usepackage{hyperref}  
+\hypersetup{%
+  bookmarksnumbered=true,%
+  bookmarks=true,%
+  colorlinks=true,%
+  linkcolor=blue,%
+  citecolor=blue,%
+  filecolor=blue,%
+  menucolor=blue,%
+  pagecolor=blue,%
+  urlcolor=blue,%
+  pdfnewwindow=true,%
+  pdfstartview=FitBH}   
+  
+\let\fullref\autoref
+%
+%  \autoref is very crude.  It uses counters to distinguish environments
+%  so that if say {lemma} uses the {theorem} counter, then autrorefs
+%  which should come out Lemma X.Y in fact come out Theorem X.Y.  To
+%  correct this give each its own counter eg:
+%                 \newtheorem{theorem}{Theorem}[section]
+%                 \newtheorem{lemma}{Lemma}[section]
+%  and then equate the counters by commands like:
+%                 \makeatletter
+%                   \let\c@lemma\c@theorem
+%                  \makeatother
+%
+%  To work correctly the environment name must have a corrresponding 
+%  \XXXautorefname defined.  The following command does the job:
+%
+\def\makeautorefname#1#2{\expandafter\def\csname#1autorefname\endcsname{#2}}
+%
+%  Some standard autorefnames.  If the environment name for an autoref 
+%  you need is not listed below, add a similar line to your TeX file:
+%  
+%\makeautorefname{equation}{Equation}%
+\def\equationautorefname~#1\null{(#1)\null}
+\makeautorefname{footnote}{footnote}%
+\makeautorefname{item}{item}%
+\makeautorefname{figure}{Figure}%
+\makeautorefname{table}{Table}%
+\makeautorefname{part}{Part}%
+\makeautorefname{appendix}{Appendix}%
+\makeautorefname{chapter}{Chapter}%
+\makeautorefname{section}{Section}%
+\makeautorefname{subsection}{Section}%
+\makeautorefname{subsubsection}{Section}%
+\makeautorefname{theorem}{Theorem}%
+\makeautorefname{thm}{Theorem}%
+\makeautorefname{cor}{Corollary}%
+\makeautorefname{lem}{Lemma}%
+\makeautorefname{prop}{Proposition}%
+\makeautorefname{pro}{Property}
+\makeautorefname{conj}{Conjecture}%
+\makeautorefname{defn}{Definition}%
+\makeautorefname{notn}{Notation}
+\makeautorefname{notns}{Notations}
+\makeautorefname{rem}{Remark}%
+\makeautorefname{quest}{Question}%
+\makeautorefname{exmp}{Example}%
+\makeautorefname{ax}{Axiom}%
+\makeautorefname{claim}{Claim}%
+\makeautorefname{ass}{Assumption}%
+\makeautorefname{asss}{Assumptions}%
+\makeautorefname{con}{Construction}%
+\makeautorefname{prob}{Problem}%
+\makeautorefname{warn}{Warning}%
+\makeautorefname{obs}{Observation}%
+\makeautorefname{conv}{Convention}%
+
+
+%
+%                  *** End of hyperref stuff ***
+
+%theoremstyle{plain} --- default
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{conj}{Conjecture}[section]
+%\newtheorem{ass}{Assumption}[section]
+%\newtheorem{asses}{Assumptions}[section]
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{ass}{Assumption}[section]
+\newtheorem{asss}{Assumptions}[section]
+\newtheorem{ax}{Axiom}[section]
+\newtheorem{con}{Construction}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{notn}{Notation}[section]
+\newtheorem{notns}{Notations}[section]
+\newtheorem{pro}{Property}[section]
+\newtheorem{quest}{Question}[section]
+\newtheorem{rem}{Remark}[section]
+\newtheorem{warn}{Warning}[section]
+\newtheorem{sch}{Scholium}[section]
+\newtheorem{obs}{Observation}[section]
+\newtheorem{conv}{Convention}[section]
+
+%%%% hack to get fullref working correctly
+\makeatletter
+\let\c@obs=\c@thm
+\let\c@cor=\c@thm
+\let\c@prop=\c@thm
+\let\c@lem=\c@thm
+\let\c@prob=\c@thm
+\let\c@con=\c@thm
+\let\c@conj=\c@thm
+\let\c@defn=\c@thm
+\let\c@notn=\c@thm
+\let\c@notns=\c@thm
+\let\c@exmp=\c@thm
+\let\c@ax=\c@thm
+\let\c@pro=\c@thm
+\let\c@ass=\c@thm
+\let\c@warn=\c@thm
+\let\c@rem=\c@thm
+\let\c@sch=\c@thm
+\let\c@equation\c@thm
+\numberwithin{equation}{section}
+\makeatother
+
+\bibliographystyle{plain}
+
+%--------Meta Data: Fill in your info------
+\title{Converse of the Lebesgue Number Lemma}
+
+\author{Andrew Lys}
+
+\date{AUGUST 28, 2024}
+
+\begin{document}
+
+\begin{abstract}
+
+The Heine-Cantor theorem is a classical theorem that proves every continuous function on a compact set is uniformly continuous. This paper chases a partial converse to this theorem. If every continuous function on a metric space is uniformly continuous, and this is true for every equivalent metric, then the metric space is compact. In doing so, we investigate properties of metric spaces, termed Lebesgue spaces, where open covers have Lebesgue numbers. We end our investigation of Lebesgue spaces with a characterization of compactness, specifically, if a metric space is Lebesgue for every equivalent metric, then it is compact. On the way to proving this theorem, we state and prove some important theorems from general topology, most importantly Hausdorff's theorem of extending metrics. All the theorems from topology are sufficiently introduced and proved, such that a background is not necessary (but indeed helpful). 
+
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+
+\section{Introduction}
+
+One of the classic introductory analysis exercises is to prove that every continuous function on a compact space is uniformly continuous. This is the well-known Heine-Cantor Theorem. The most common proof is to extract a covering by $\delta_x$-balls, via appealing to continuity, then extract a finite subcover and picking a satisfactory $\delta$ smaller than every $\delta_{x_i}$ corresponding to balls in the finite subcover. Another proof is by appealing to the Lebesgue Number Lemma. 
+
+\begin{defn}[Lebesgue Number]
+  Given a metric space $(X,d)$ and an open covering $\{U_\gamma\}_{\gamma \in \Gamma}$, a positive real number $\varepsilon$ is a \emph{Lebesgue number} if, for every $x \in X$, there is some $U_\gamma$ that contains the open ball of radius $\varepsilon$ centered at $x$, which we will denote by $D_\varepsilon(x)$.
+\end{defn}
+\begin{thm}[Lebesgue Number Lemma] \label{thm:1.2}
+If a metric space $(X,d)$ is compact, then every open cover admits a Lebesgue Number.
+\end{thm}
+This theorem relies on the equivalence of compactness and sequential compactness in Metric Spaces. We will prove this in the following Lemma. First, we require a few definitions. 
+\begin{defn}
+  Let $X$ be a topological space. $X$ is \emph{sequentially compact} if every infinite sequence, say $(x_n)_1^\infty$, has a convergent subsequence. In other words, there exists $(x_{n_k})_{k=1}^\infty\subset(x_n)_1^\infty$ such that $x_{n_k} \to p \in X$.
+\end{defn}
+\begin{defn}
+  Let $X$ be a topological space, and let $A$ be a subset of $X$. An \emph{$\omega$-accumulation} point of $A$ is a point $p \in X$ such that every neighborhood of $p$ contains infinitely many points of $A$.
+\end{defn}
+\begin{defn}
+  An \emph{$\varepsilon$-net} of a metric space $(X,d)$ is a subset $N$ of $X$ such that for every $x \in X$, there exists a $y \in N$ such that $d(x,y) < \varepsilon$. A metric space is said to be totally bounded if for every $\varepsilon > 0$, there exists a finite $\varepsilon$-net.
+\end{defn}
+\begin{lem} \label{lem:1.3}
+  A metric space $(X,d)$ is compact if and only if it is sequentially compact.
+\end{lem}
+\begin{proof}[Proof]
+  $(\implies)$ Let $(x_i)_1^\infty\subset X$ be an arbitrary sequence in $X$. We will neglect the index for sequences when the index is clear. If $(x_i)$ has only finitely many distinct elements, then for some $x_i$, there is an infinite sequence $(x_{i_k})_{k=1}^\infty$, where $x_{i_1} = x_i$, that is constant. This is a convergent subsequence. Thus, we will assume that $(x_i)$ has infinitely many distinct elements. 
+
+  We now show that $(x_i)$ has an $\omega$-accumulation point. We follow the proof presented by L. Steen and J. A. Seebach \cite{c-e top}. Suppose for contradiction that $(x_i)$ does not have an $\omega$-accumulation point.
+
+  Let $\mathcal{F} = \{F: F\subset (x_i) \text{ and } F \text{ is finite}\}$. $\mathcal{F}$ is countable. 
+  
+  Let $U_F = \mathrm{int\,} F\cup (X \setminus (x_i))$. We will now show that $\mathcal{C} = \{U_F\}_{F\in \mathcal{F}}$ is a cover of $X$.
+
+  Since $(x_i)$ is assumed to have no $\omega$-accumulation point, for every $x \in X$, there is some open set $U$ containing $x$ such that $(x_i) \cap U = F$, for some $F \in \mathcal{F}$. With some manipulation, we have the following:
+  \begin{equation*}
+    U = (U \cap (x_i)) \cup (U \setminus (x_i)) \subset F \cup (X \setminus A)\implies U \subset U_F \in \mathcal{C}
+  \end{equation*}
+  Therefore, every $x$ is contained in some open set that is contained in some element of $\mathcal{C}$, and so $\mathcal{C}$ is indeed an open cover of $X$.
+
+  Since $X$ is compact, let $\mathcal{C}' = \{\mathrm{int\,} F_j \cup (X \setminus (x_i))\}_{j=1}^n$ be a finite subcover of $\mathcal{C}$, and let $B = \bigcup_{j=1}^n F_i$. By definition of $F$, $B$ is finite.
+
+  Thus, we have the following:
+  \begin{equation*}
+    X = \bigcup_{j=1}^n \mathrm{int\,} F_j\cup (X\setminus (x_i)) \subset \bigcup_{j=1}^n F_j \cup X \setminus (x_i) = B \cup X \setminus (x_i)\, .
+  \end{equation*}
+  so, $B = (x_i)$, which is a contradiction. 
+
+  Therefore, $(x_i)$ must have an $\omega$-accumulation point in $X$ say $p$. Every $D_{1/k}(p)$ has infinitely many points of $(x_i)$. For each $k$, inductively pick the one with smallest index $i$ to be $x_{i_k}$. This subsequence then converges to $p$, and so $X$ is sequentially compact. 
+
+  $(\impliedby)$ This direction uses almost the same method used to prove the Lebesgue Number Lemma. 
+
+  Let $\{U_i\}_{i\in I}$ be an open cover of $X$. Suppose, for the sake of contradiction, that for every $\delta > 0$, there is some $x \in X$ such that $D_\delta(x)$ is not contained in any $U_i$. 
+
+  Let $\delta = \frac{1}{n}$, and let the corresponding $x$ be $x_n$. Since $X$ is sequentially compact, $(x_n)_1^\infty$ has a convergent subsequence $(x_{n_k})_{k=1}^\infty$, and let $x_{n_k}\to p \in X$. Then, for any $\epsilon > 0$, there is some $K$ such that $k \ge K \implies d(x_{n_k}, p) < \frac{\varepsilon}{2}$. 
+
+  Since $\{U_i\}_{i\in I}$ is an open cover of $X$, $p$ is contained in some $U_i$, and since $U_i$ is open, there is some $\epsilon > 0$ such that $D_{\varepsilon}(p) \subset U_i$. 
+
+  Pick $j$ large enough so that $\frac{1}{n_j} < \frac{\varepsilon}{2}$ and $j \ge K$. Then we have the following:
+  \begin{equation*}
+    D_{1/n_j}(x_{n_j}) \subset D_\varepsilon(p) \subset U_i
+  \end{equation*}
+  This is a contradiction. Thus, there exists a $\delta > 0$ such that for every $x\in X$, $D_\delta(x) \subset U_i$, for some $U_i$. This $\delta$ is in fact a Lebesgue number. 
+
+  $X$ is sequentially compact, so every sequence has a convergent, and thus cauchy, subsequence. Now, we want to show that for every $\varepsilon$, $X$ has a finite $\varepsilon$-net, or $X$ is totally bounded. Suppose for contradiction this is not the case. Then there is some $\varepsilon > 0$ such that for any $\{x_1, \ldots, x_n\} \subset X$, we have $U = \bigcup_{i = 1}^n D_\varepsilon(x_i) \neq X$. Let $x_{n+1} \in X \setminus U$. We thus generate a sequence $(x_n)_1^\infty$ such that for any $n,m$, $d(x_n,x_m) \ge \varepsilon$, and so it has no convergent subsequence. This is a contradiction, and so there is a finite $\delta$-net of $X$. 
+
+Let $(y_k)_{k=1}^N$ be a $\delta$-net. Then each $D_\delta(y_k) \subset U_k$. The finite subset $\{U_k\}_{k=1}^N$ is then a sufficient subcover. Thus $X$ is compact.
+\end{proof}
+
+Now we prove \fullref{thm:1.2}.
+\begin{proof}[Proof]
+  Since $(X,d)$ is compact and a metric space, by \fullref{lem:1.3}, $(X,d)$ is sequentially compact. Suppose for contradiction, that a Lebesgue number for some open cover $\mathcal{U} = \{U_i\}_{i\in I}$ does not exist. Then, as before, for every $\varepsilon > 0$, there is some $x \in X$ such that $D_\varepsilon(x)$ is not contained in any $U_i$. 
+
+  Like before, we let $\varepsilon = \frac1{n}$ and $x_n$ be the corresponding $x$. Then the sequence $(x_n)_1^\infty \subset X$ has a convergent subsequence $(x_{n_k})_{k=1}^\infty$, which converges to $p \in X$. 
+
+  For $\varepsilon > 0$, $\exists K$ such that $k\ge K$ implies $d(x_{n_k}, p) < \frac{\varepsilon}{2}$. Since $\mathcal{U}$ is a cover, $p$ is in some $U_i$, and $U_i$ open means that there is some $\varepsilon > 0$ such that $D_\varepsilon(p) \subset U_i$. 
+
+  Pick $k$ larger than $K$ and large enough so $\frac{1}{n_k} < \frac{\varepsilon}{2}$. 
+
+  If $d(x_{n_k}, y) < \frac{1}{n_k}$, then we have the following:
+  \begin{equation*}
+    d(p,y) \le d(p,x_{n_k}) + d(x_{n_k}, y) < \varepsilon
+  \end{equation*}
+  Therefore, $D_{\frac{1}{n_k}}(x_{n_k}) \subset U_i$. This is a contradiction, so there does indeed exist a Lebesgue number.
+\end{proof}
+
+Not all spaces have the property that every open cover has a Lebesgue number. Indeed, we present two such examples. 
+
+\begin{exmp}
+  Let $(0,1) \subset \mathbb R$, be our metric space with the euclidean metric. The open cover given by $\{(2^{-k-1}, 2^{-k+1})\}_{k=1}^\infty$ does not have a Lebesgue Number, since the first open interval covering each $2^{-k}$ is $(2^{-k-1}, 2^{-k+1})$, and the diameter of this interval goes to $0$.
+\end{exmp} 
+\begin{exmp}\label{exmp:1.8}
+  Let our metric space be $\mathbb N$ equipped with the discrete metric. The covering given by $\{D_{1/(2n)}(n)\}_{n=1}^\infty$ also has no Lebesgue number, since every open set contains only $n$, and the diameter also goes to $0$. 
+\end{exmp}
+As a result, we distinguish metric spaces that have this property. We will call them Lebesgue spaces, or L-spaces, and we will call this property of metric spaces the Lebesgue property. 
+
+With the Lebesgue number lemma proved, we prove a fact that is slightly more general than the fact that every continuous function on a compact set is uniformly continuous.
+\begin{thm} \label{thm:1.7}
+  If $(X,d)$ is a Lebesgue space, and $(Y,d')$ is an arbitrary metric space, then every continuous function $f: X \to Y$ is uniformly continuous.
+\end{thm}
+\begin{proof}
+  For $\epsilon > 0$, and every $x \in X$, there is a $\delta_x$, such that $f(D_{\delta_x}(x))\subset D_{\varepsilon/2}(f(x))$. The set $\{D_{\delta_x}(x)\}_{x\in X}$ is an open cover of $X$. 
+
+  Since $X$ is an L-Space, there exists a $\delta > 0$ such that for every $y \in X$, $D_\delta(y) \subset D_{\delta_x}(x)$, for some $x \in X$. Therefore, if $d(y,z) < \delta$, then $d(z,x) < \delta_x$, so $d'(f(z), f(x)) < \frac{\varepsilon}{2}$. Similarly, $d(y,x) < \delta_x$ implies $d'(f(y), f(x)) < \frac{\varepsilon}{2}$. By the triangle inequality, $d'(f(y),f(z)) \le d'(f(y), f(x)) + d'(f(z), f(x)) < \varepsilon$. 
+
+  Thus, $f$ is uniformly continuous.
+\end{proof}
+As a simple corollary, we prove the Heine-Cantor theorem. 
+\begin{cor}[Heine-Cantor Theorem]
+If $(X,d)$ is a compact metric space, and $(Y,d')$ is an arbitrary metric space, then every continuous function $f: X \to Y$ is uniformly continuous.
+\end{cor}
+\begin{proof}
+  Since $(X,d)$ is compact, by \fullref{thm:1.2}, it is a Lebesgue space. Thus, by \fullref{thm:1.7}, every continuous function $f:X \to Y$ is uniformly continuous.
+\end{proof}
+\section{What Uniform Continuity Tells Us About Compactness}
+After discovering that uniform continuity follows from compactness, a natural question is to ask whether or not the converse is true: can compactness follow from uniform continuity?
+
+This question in the most basic form has a simple answer in the negative, i.e. there exists a uniformly continuous function on a non-compact metric space. Indeed, we need only follow the spirit of \fullref{exmp:1.8}.
+\begin{thm}\label{thm:2.1}
+  There exists a non-compact metric space $(X,d)$ and a uniformly continuous function $f: X \to \mathbb R$. 
+\end{thm}
+\begin{proof}[Proof]
+  Let $\mathbb N = X$ and $d$ the discrete metric. The identity function is such a function. Indeed, for $\varepsilon > 0$, letting $\delta  = \frac12$, $d(x,y) < \frac12$ implies $x = y$. Therefore, $|f(x) - f(y)| = |x-y| = 0 < \varepsilon$. $\delta$ is independent of $x$, so $f$ is indeed uniformly continuous. $(\mathbb N, d)$ is clearly non-compact, since $\{D_{1/2}(n)\}_{n=1}^\infty$ is an open cover with no finite subcover. 
+\end{proof}
+
+Despite a negative answer to this question, not all hope is lost.  
+
+If we equip $\mathbb N$ with another metric that also generates the discrete topology, i.e. an equivalent metric, we may find that the function given in \fullref{thm:2.1} is no longer uniformly continuous. We now prove this claim.
+
+\begin{prop}\label{pro:2.2}
+  There exists a metric $d^\ast$ that generates the discrete topology on $\mathbb N$ such that the identity function $e: \mathbb N \to \mathbb R$ is not uniformly continuous. 
+\end{prop}
+\begin{proof}[Proof]
+  We begin this proof with a metric that we will use again later. 
+
+  Let $d^\ast(m,n) = \left| \frac1{m} - \frac1{n}\right| $. We now show that $d^\ast$ generates the discrete topology. 
+
+  In order to show this, we need to prove that every singleton is open. 
+
+  Since $\displaystyle\lim_{n \to \infty} \left| \frac1{m} - \frac1{n}\right| = \frac1{m}$, letting $\varepsilon = \frac1{2m}$, there is some $N$ such that for every $n \ge N$, we have $\left| \left|\frac1{m} - \frac1{n}\right| - \frac1{m}\right| < \frac1{2m}$, equivalently we have the following: 
+  \[ \frac1{2m} < \left| \frac1{m} - \frac1{n}\right| = d^\ast(n,m) < \frac3{m} \]
+
+  Since the set of elements of $\mathbb N$ less than $N$ is finite, $\min\{d^\ast(m,n) : n < N\}$ exists, and is positive. Let $\delta$  less than this number and $\frac{1}{2m}$, we find that $D_\delta (m) = \{m \}$, and so every singleton is open. 
+  
+  Now we prove that the identity function is not uniformly continuous. 
+
+  Let $\varepsilon = \frac12$, and fix $m \in \mathbb N$. Since $d^\ast(m,n) \to \frac1{m}$, we may find $n\neq m$ such that $d^\ast(m,n) < \frac{3}{m}$. Since $n\neq m$, $|e(n)-e(m)| = |n-m| \ge 1 > \varepsilon$. Finally, for every $\delta >0$, by the Archimedean principle, there exists some $m$ such that $\frac3{m} < \delta$. Thus, for every choice of $\delta>0$, there exists some $m,n$ such that $d^\ast(m,n) < \frac3{m} < \delta$, but $|e(m) - e(n)| > \varepsilon$.
+\end{proof}
+
+The question now is, how well will this result generalize? 
+
+We have shown that for this particular non-compact metric space, that even if some continuous function is uniformly continuous, there exists some equivalent metric, under which it is not uniformly continuous. 
+
+Will it be the case that, if every continuous function, under every equivalent metric, is uniformly continuous, then the metric space is compact? As we shall prove, the answer is yes. Let us formulate this question as a theorem whose proof we will work towards.
+
+\begin{thm} \label{thm:2.3}
+  Let $(X,d)$ be a metric space. Suppose that for any metric space $(X', d')$, any continuous function $f:(X,d) \to (X', d')$, is uniformly continuous. Let $d^\ast$ be a metric equivalent to $d$  on $X$. If $f:(X, d^\ast) \to (X', d')$ is uniformly continuous, then $(X,d)$ is compact. 
+\end{thm}
+
+We have already seen that on an Lebesgue space, every continuous mapping into a metric space is uniform. We shall soon see the converse of this. Additionally, we will show that, for a given metric space $(X,d)$, if every equivalent metric results in $(X,d)$ posessing the Lebesgue property, then $(X,d)$ is compact. To get to this point though, we need to investigate some extension theorems from General Topology and some properties of Lebesgue spaces.
+
+\section{Extension Theorems}
+
+A good many of the results from general topology are incredibly useful in proving the necessary properties of L-Spaces. These results may be familiar to some readers familiar with general topology. However, for the sake of completeness, we now present them. 
+
+We begin this section with some definitions. 
+\begin{defn}
+  A collection $\{X_i\}_{i\in I}$ of subsets of some topological space $X$ is said to be \emph{locally finite} if, for every $x \in X$, there is some neighborhood of $x$ that intersects only finitely many elements of $\{X_i\}_{i\in I}$. 
+\end{defn}
+\begin{defn}
+  Let $X$ be a topological space and let $\mathcal{U} = \{U_i\}_{i\in I}$ be a cover of $X$. A set $\mathcal{V} = \{V_j\}_{j\in J}$ is said to be a \emph{refinement} of $\mathcal{U}$ if $\mathcal{V}$ is a cover of $X$ and, for every $V_j \in \mathcal{V}$, there is some $U_i \in \mathcal{U}$ such that $V_j \subset U_i$.
+\end{defn}
+\begin{defn}
+  A topological space $X$ is said to be \emph{paracompact} if every open cover has a locally finite refinement.
+\end{defn}
+
+The following lemma and theorem will be useful.
+\begin{lem}\label{lem:3.1}
+  Let $\{X_i\}_{i\in I}$ be a locally finite collection of closed subsets of a topological space $X$. Any union of $X_i$'s is closed.
+\end{lem}
+\begin{proof}[Proof]
+  Let $Y = \bigcup_{i\in I} X_i$ and $x\in X \setminus Y$. There exists an open neighborhood $W$ of $x$ that meets finitely many $X_i$, say $X_1, \ldots, X_n$. Then, 
+  $$W \setminus Y = W \setminus \bigcup_{i=1}^n X_i \subset X \setminus Y$$ and $W\setminus Y$ is open. Therefore, $Y$ is closed.
+\end{proof}
+\begin{thm}[Pasting Lemma] \label{thm:3.2}
+  Let $\{X_i\}_{i\in I}$ be a locally finite collection of closed subsets of a topological space $X$ such that $\bigcup_{i\in I} X_i = X$. Let $Y$ be any topological space. Let $f: X\to Y$ such that $f\restriction X_i$ is continuous. Then $f$ is continuous. 
+\end{thm}
+\begin{proof}[Proof]
+  Let $F \subset Y$ closed. Then, for every $i\in I$, $f^{-1}(F) \cap X_i$ is closed. By \fullref{lem:3.1}, $\bigcup_{i\in I}f^{-1}(F) \cap X_i$ is closed.
+\end{proof}
+
+We now present one of the earliest, and most important extension theorems, the Tietze-Urysohn extension theorem. We follow B. Bollob{\'a}s' presentation \cite{bollobas}. 
+
+\begin{defn}
+  A topological space $X$ is said to be \emph{normal} if, for every closed and disjoint pair of sets $A, B \subset X$, there exist disjoint open sets $U, V$ such that $A \subset U$, $B \subset V$.
+\end{defn}
+
+We present a few short lemmas about normality that will prove to be useful. 
+
+\begin{lem}\label{lem:3.7}
+  Closed subspaces of normal spaces are normal.
+\end{lem}
+\begin{proof}
+  Let $X$ be a normal space, and let $A$ be a closed subspace of $X$. Let $E$ and $F$ be subsets of $A$, closed in $A$. Then, $E\cap A = E$ and $F\cap A = F$ are closed in $X$. Since $X$ is normal, there exists a pair of disjoint open sets $U'$ and $V'$ such that $E \subset U'$ and $F\subset V'$. Then $U = U'\cap A$ and $V = V' \cap A$ are disjoint nonempty open in $A$ subsets of $A$ such that $E \subset U$ and $F \subset V$. 
+\end{proof}
+\begin{notn}
+  If $(X,d)$ is a metric space, $A$ is a subset of $X$, and $x \in X$, then we let $d(x, A) = \inf_{a \in A}\{d(x,a)\}$. If $B$ is a subset of $X$, then we let $d(A,B) = \inf_{(a,b) \in A\times B}\{d(a,b)\}$. 
+\end{notn}
+\begin{lem}\label{lem:3.8}
+  Metric spaces are normal.
+\end{lem}
+\begin{proof}
+  Let $(X,d)$ be a metric space, and let $A$ and $B$ be closed, disjoint, nonempty subsets of $X$. 
+
+  We claim that for any $x$ in $X$, and any closed set $F\subset X$, $d(x, F) = 0$ if and only if $x \in F$. The backward direction is true by definition. If $d(x,F) = 0$, then for every $\frac1{n}$, there is some $x_n$ in $F$ such that the following is true:
+  \[
+    0 = d(x,F) \le d(x, x_n) < d(x,F) + \frac{1}{n} = \frac1{n}
+  \]
+  Therefore, we extract a sequence $(x_n)_1^\infty \subset F$ such that $x_n \to x$. Since $F$ is closed, it contains all its limit points, and so $x \in F$. 
+
+  Using this fact, for every $a \in A$, and $b \in B$, let $r_a = \frac{d(a, B)}{3}$ and $r_b = \frac{d(b, A)}{3}$. Since $A$ and $B$ are disjoint, $r_a$ and $r_b$ are strictly positive. 
+
+  We choose $U$ and $V$ as follows: 
+  \begin{align*}
+    U &= \bigcup_{a\in A} D_{r_a}(a)\\
+    V &= \bigcup_{b\in B} D_{r_b}(b)
+  \end{align*}
+
+  Suppose for contradiction that $U$ and $V$ are not disjoint, i.e. there is some $c \in U\cap V$. Then $c \in D_{r_a}(a)$ for some $a$ in $A$ and $c \in D_{r_b}(b)$ for some $b$ in $B$. 
+
+  \[
+    d(a,b) \le d(a, c) + d(c, b) \le r_a + r_b \le \frac{d(a, B)}3 + \frac{d(b, A)}3 \le 2\frac{d(a,b)}3
+  \]
+  This is only possible if $d(a,b) = 0$, but since $A$ and $B$ are disjoint, this cannot be the case, so $U$ and $V$ are our sets that show $(X,d)$ is normal.
+\end{proof}
+
+This following lemma will be useful in proving Urysohn's lemma.
+
+\begin{lem} \label{lem:3.9}
+  A topological space $X$ is normal if and only if, for every open $U_0$ and closed $A_0 \subset U_0$, there exists a closed $A_1$ and an open $U_1$ such that $A_0 \subset U_1 \subset A_1 \subset U_0$.
+\end{lem}
+\begin{proof}
+  $(\implies)$ Let $B = X \setminus U_0$ closed, so that $A_0 \cap B = \emptyset$. There exist disjoint open sets $U,V$ such that $A_0 \subset U$ and $B \subset V$. Since $B$ is contained in $V$, then $X \setminus B$ contains $X \setminus V$, or $U_0$ is contained in $X\setminus V$. Let $A_1 = X \setminus V$. $U\cap V = \emptyset$ means that $U$ is contained in $X\setminus V = A_1$. Therefore, letting $U_1 = U$, we get the following:
+  \[
+    A_0 \subset U_1 \subset A_1 \subset U_0
+  \]
+  $(\impliedby)$ Since $A$ and $B$ are disjoint, $A_0 := A \subset X \setminus B := U_0$, which is open. There exist $U_1, A_1$ such that $A_0 \subset U_1 \subset A_1 \subset U_0$, and $U_1$ is open and $A_1$ is closed. Letting $V = X \setminus A_1$, we find that $A_1 \subset X \setminus B$ implies $V = X \setminus A_1 \supset B$. $U_1\subset A_1$ means $U_1$ and $V$ are disjoint. Letting $U = U_1$, we get that $A \subset U$, $B\subset V$, and $U,V$ are open, disjoint sets.
+\end{proof}
+
+\begin{thm}[Urysohn's Lemma] \label{thm:3.8}
+  Let $A$ and $B$ be disjoint closed subsets of a normal space $X$. There is a continuous function $f: X\to [0,1]$ such that $A \subset f^{-1}(0)$ and $B\subset f^{-1}(1)$. 
+\end{thm}
+\begin{proof}
+  Let $q_0 = 0$ and $q_1 = 1$, and $q_2, q_3, \ldots$ be an enumeration of the rationals between $0$ and $1$. 
+
+  Let $U_0 = \emptyset$, $A_0 = A$, $U_1 = X \setminus B$, $A_1 = X$. 
+
+  We want to find two seqeuences of sets, one consisting of open sets, $U_0, U_1, \ldots$, one consisting of closed sets, $A_0, A_1, \ldots$, such that $U_i \subset A_i$ and, if $q_i < q_j$, then $A_i \subset U_j$. 
+
+  $U_0 \subset A_0$ and $U_1 \subset A_1$, $q_0 = 0 < q_1 = 1$, and $A_0 = A \subset X\setminus B = U_1$, since $A$ and $B$ are disjoint. 
+
+  Thus, having satisfied the base case, we proceed inductively. 
+
+  Suppose we have chosen $A_0, \ldots, A_{n-1}$ and $U_0, \ldots, U_{n-1}$ satisfying these properties. Let $q_k$ be the maximal $q_i< q_n$ such that $i < k$, and $q_l$ be the minimal $q_i > q_n$ such that $i < n$. Since $q_0 = 0 < q_n < 1 = q_1$, $q_k$ and $q_l$ can always be chosen. Then, we have $q_k < q_n < q_l$, so $A_k \subset U_l$. By \fullref{lem:3.9}, there exist $A_n, U_n$ such that $A_k \subset U_n \subset A_n \subset U_l$. If $q_j < q_n$, for $k \neq j < n$, then $q_j < q_k$ so $A_j \subset U_k \subset A_k \subset U_n$, so $A_j \subset U_n$. We can thus find these two sequences. 
+
+  For $x \in X$, define $f(x) = \inf\{q_n : x \in A_n\}$. Since $x$ is always in $A_1 = X$, the set $\{q_n : x \in A_n\}$ contains $0$, and thus is always nonempty. Therefore, $f(x)$ is well-defined and bounded below by $0$. Similarly, $f(x) \le q_1 = 1$. $f(A) = q_0 = 0$, and $f(B) = q_1 = 1$, so $f$ is a function from $X$ to $[0,1]$, with the property that was desired. 
+
+  Now, all we have to prove is that $f$ is continuous. Let $x_0$ be an arbitrary point of $X$, and suppose that $0 \le q_k < f(x_0)$. Then, $x_0 \not\in A_k$, so $X \setminus A_k \ni x_0$ and is open. For every $x \in X \setminus A_k$, we have $x \not \in A_l \subset A_k$, and so $f(x) > q_l$. Therefore, for every $q_l \le q_k$, we have $q_l < f(x)$. Similarly, if $f(x_0) < q_l \le 1$, then $x \in A_l \subset U_l$, and $x \in U_l$ implies $f(x) \le q_l$. 
+
+  Therefore, for every $(q_k, q_l) \subset [0,1]$, we have $f^{-1}((q_k, q_l)) = (X \setminus A_k) \cap U_l$ is open. Since $\mathbb Q \cap [0,1]$ is dense in $[0,1]$, the set of open intervals with rational endpoints in $(0,1)$ forms a basis for the Euclidean topology on $(0,1)$. Finally, since $A \subset f^{-1}(\{0\})$, $B \subset f^{-1}(\{1\})$, $f$ is continuous. 
+\end{proof}
+Applying an affine transformation to the function given above, we may find $f: X \to [a,b]$ instead. 
+
+With Urysohn's Lemma proved, we are now ready to prove the Tietze-Urysohn Extension Theorem.
+\begin{thm}[Tietze-Urysohn Extension Theorem]\label{thm:3.9}
+  Let $C$ be a closed subset of a normal space $X$ and let $f: C \to [-1,1]$ be a continuous function. Then $f$ has a continuous extension to the whole space $X$, i.e. there is a continuous function $F:X\to [-1,1]$ such that $F \restriction C = f$. 
+\end{thm}
+\begin{proof}
+  We will construct our function $F$ as a uniform limit of continuous functions. 
+
+  Let $f_0 = f$, $A_0 = f_0^{-1}([-1, -\frac13])$, and $B_0 = f_0^{-1}([\frac13, 1])$. 
+
+  By \fullref{thm:3.8}, there is some $F_0: X \to [-\frac13, \frac13]$ such that $F_0 \restriction A_0 = -\frac13$ and $F_0 \restriction B_0 = \frac13$. 
+
+  Let $f_1 = f_0 - F_0\restriction C$. If $x_0 \in f_0^{-1}\left(\left[-1, -\frac13\right]\right)$, then 
+  $$f_1(x_0) = f_0(x_0) - F_0\restriction C (x_0) = f_0(x_0) + \frac13 \in \left[-\frac23, 0\right]$$ 
+
+  Similarly, 
+  \[
+    x_0 \in f_0^{-1}\left(\left[\frac13, 1\right]\right) \implies f_1(x_0) \in \left[0, \frac23\right]
+  \]
+
+  Therefore, $f_1:C\to[-\frac23, \frac23]$
+
+  Suppose that we have a continuous function 
+  \[
+    f_n : C \to \left[-\left(\frac23\right)^n, \left(\frac23\right)^n \right]
+  \]
+  Let $A_n = f_n^{-1} ([-(\frac23)^n, -\frac13(\frac23)^n])$ and let $B_n = f_n^{-1}([\frac13(\frac23)^n, (\frac23)^n])$
+
+  By \fullref{thm:3.8}, there is a continuous
+  \begin{align*}
+    F_n&:X \to \left[-\frac23 \left(\frac13\right)^n, \frac23 \left(\frac13\right)^n\right]\\
+  \end{align*}
+  Such that $F_n \restriction A_n = -\frac13(\frac23)^n$ and $F_n\restriction B_n = \frac13(\frac23)^n$.
+  
+  Set $f_{n+1} = f_n - F_n\restriction C$.
+
+  Thus, we inductively select a sequence $F_0, F_1, \ldots$ and $f_0, f_1, \ldots$ such that $\|f_n\| \le (\frac23)^n$ and $\|F_n\| \le \frac13 \left(\frac23\right)^n$. Thus, $\sum_{n=1}^\infty \|F_n\| \le \frac13 \sum_{n=0}^\infty \left(\frac23\right)^n = 1$. 
+
+  Therefore, $F(x) = \sum_{n=0}^\infty F_n(x)$ is well-defined, and $F_n \to F$ uniformly. Since $F_n$ is continuous, $F$ is continuous, and $\left|f(x) - \sum_{k=0}^n F_k(x)\restriction C\right| = |f_{n+1}(x)| \le \left(\frac23\right)^{n+1}\to 0$. Therefore, $F\restriction C = f$, and so $F:X \to [-1,1]$ is our desired extension. 
+\end{proof}
+\[
+  \ast \ast \ast
+\]
+
+In the rest of this section, we will prove what is sometimes known as Hausdorff's extension theorem, i.e. given a metric space $(X,d)$, and a closed subset $A$, if a metric $d'$ defined on $A$ is equivalent to $d\restriction A$, then $d'$ can be extended to a metric on $X$ that is equivalent to $d$ \cite{hausdorff}. 
+
+In much of topology, questions of the existence of extensions are rephrased as questions about retracts.
+
+\begin{defn}
+  If $X$ is a topological space, then a continuous function $r: X \to A \subset X$ is a \emph{retraction} if and only if $r \restriction A = \mathrm{id}_A$. $A$ is then called a \emph{retract} of $X$. 
+\end{defn}
+\begin{defn}
+  A space $R$ is an \emph{absolute retract} if and only if, given any $T_4$, i.e normal and hausdorff, space $X$, any closed subset $A$ of $X$, and a continuous function $f: A \to R$, then $f$ has an extension to all of $X$.
+\end{defn}
+In the terminology of retracts, \fullref{thm:3.9} proves that $[a,b]$ is an absolute retract.
+
+Absolute retracts are absolute because they are retracts of every $T_4$ space they can be embedded in as a closed subset (specifically their image under the embedding is a retract). The following theorem formalizes this idea.
+
+\begin{thm}
+A $T_4$ space is an absolute retract if and only if it's a retract of every $T_4$ space in which it can be embedded as a closed subset.
+\end{thm}
+\begin{proof}
+  $(\implies)$ Let $A$ be a $T_4$ absolute retract, and let $X$ be a $T_4$ space such that $A \subset X$, and $A$ is closed in $X$. 
+
+  Let $e: A \to A$ be the identity map. Since $A$ is an absolute retract, there exists an extension to $E: X \to A$. Thus, $A$ is a retract of $X$. 
+
+  $(\impliedby)$ Let $R$ be a $T_4$ space that is a retract of every $T_4$ space that it can be embedded in as a closed subset. Let $X$ be a $T_4$ space, $A\subset X$ be closed, and $f:A \to R$ be a continuous function. 
+
+  Consider $X \sqcup R$, the disjoint union of $X$ and $R$, which is formally defined by $(X \times \{i_X\}) \cup (R \times \{i_R\})$. 
+
+  Let $\sim$ be a relation on $X\sqcup R$ defined by $(a,i_X) \sim (f(a), i_R)$, i.e. we identify the points $a$ and $f(a)$. Expand $\sim$ to an equivalence relation and let $X \sqcup_f R = (X \sqcup R) \mathord/ \sim\,$. 
+
+  $X \sqcup_f R$ can be thought of as "gluing together" $X$ and $R$ along the function $f$. It is often referred to as an \emph{adjunction space}. As a set, $X \sqcup_f R = (X\setminus A) \sqcup R$, so $R \subset X \sqcup_f R$. 
+
+  We equip $X \sqcup R$ with the disjoint union topology. Let $\phi_X: X \to X\sqcup R$ and $\phi_R: R \to X \sqcup R$ be the canonical projection maps. A set $U \subset X \sqcup R$ is open if and only if $\phi_X^{-1}(U)$ is open in $X$ and $\phi_R^{-1}(U)$ is open in $R$.
+
+  We equip $X\sqcup_f R$ with the quotient topology. Let $q: X \sqcup R \to X \sqcup_f R$ be the quotient map, i.e. $y \mapsto [y]$. A set $U$ in $X\sqcup_f R$ is open if and only if $q^{-1}(U)$ is open in $X\sqcup R$.   
+
+  Thus, $q^{-1}(R) = A \cup R$. $R$ is closed in itself, and $A$ is closed in $X$, so $R$ is a closed subset of $X \sqcup_f R$. 
+
+  If $C \subset R$ is closed, then $q^{-1}(q(C)) = C \sqcup f^{-1}(C)$. $C$ is closed in $R$, and $f$ is continuous, so $f^{-1}(C)$ is closed in $X$. Therefore, $C \sqcup f^{-1}(C)$ is closed in $X \sqcup R$, so $C$ is closed in $X \sqcup_f R$. As a result, $q \restriction R$ is a closed map, i.e. it maps closed sets to closed sets. 
+
+  Now, we wish to prove that $X \sqcup_f R$ is indeed a $T_4$ space. We will follow J. Munkres' lecture notes \cite{munkres}.
+
+  First, we prove that it is $T_1$. 
+
+  Let $z \in X \sqcup_f R$. If $z \in R$, then $\{z\}$ is closed. This is because $R$ is $T_4$, and so for every $x \in R \setminus \{z\}$, there exist disjoint open neighborhoods $U_x$ and $V_z$ of $x$ and $z$, respectively. Thus, $U_x \subset R \setminus \{z\}$, so $R \setminus \{z\}$ is open, and so $\{z\}$ is closed in $R$, and since $q\restriction R$ is a closed map, $\{q(z)\}$ is closed in $X \sqcup_f R$. If $z \not\in R$, then $q^{-1}(\{z\})$ is a singleton in $X$, and since $X$ is $T_4$, it is closed in $X$. Therefore, singletons in $X \sqcup_f R$ are closed, and it is $T_1$. 
+
+  Let $B,C$ be disjoint closed subsets in $X \sqcup_f R$, and let $B_X = q^{-1}(B) \cap X$, $C_X = q^{-1}(C) \cap X$ and $B_R = q^{-1}(B) \cap R$, $C_R= q^{-1}(C) \cap R$. 
+
+  Since $R$ is normal, by \fullref{thm:3.8}, there is a continuous function $g: R \to [0,1]$ such that $B_R \subset g^{-1}(0)$ and $C_R \subset g^{-1}(1)$. 
+
+  Let $h: A \cup B_X \cup C_X \to [0,1]$ by $h = g\circ f$ on $A$, $h = 0$ on $B_X$, $h = 1$ on $C_X$. Since each $A, B_X, C_X$ are closed in $X$, and $h$ is well-defined, then by \fullref{thm:3.2}, $h$ is continuous. 
+
+  By \fullref{thm:3.9}, there is an extension of $h$ to $k: X \to [0,1]$. 
+
+  Let $p(x) = \begin{cases}
+    g(x) & x \in R\\
+    k(x) & x \in X
+  \end{cases}$ 
+
+  $p$ is a map from $X \sqcup R$ to $[0,1]$, and thus induces a map on $X\sqcup_f R$ defined by action on the equivalence classes. Let this induced map be $F$. Then, $F: X\sqcup_f R \to [0,1]$ is continuous and is $0$ on $B$ and $1$ on $C$. 
+
+  Thus, $U = F^{-1}\left(\left[0, \frac12\right)\right), V = F^{-1} \left( \left ( \frac12, 1 \right] \right)$ are disjoint open sets such that $B \subset U$ and $C \subset V$. Therefore, $X\sqcup_f R$ is $T_4$. 
+
+  Therefore, $R$ is a retract of $X \sqcup_f R$, so there is some continuous $r: X \sqcup_f R \to R$ such that the restriction of $r$ to $R$ is the identity. Let $F_0: X \to R$ be given by $r \restriction X$. 
+
+  $F_0 \restriction A = r \restriction A = f$. Thus, $F$ is a continuous extension of $f$, and so $R$ is an absolute retract.
+\end{proof}
+
+The notion of an absolute retracts gives rise to a more specialized notion for metric spaces. 
+\begin{defn}
+  A topological space $Y$ is a \emph{metric absolute retract} when, given a metric space $X$, a closed subset $A$, and a continuous function $f:A\to Y$, then $f$ can be extended to all of $X$. 
+\end{defn}
+
+For our proof of Hausdorff's extension theorem, we will use facts about normed spaces, and the more general, locally convex topological vector spaces. 
+
+\begin{defn}
+  A \emph{Locally Convex Topological Vector Space} (LCTVS) is a topological vector space that has a neighborhood basis at the origin consisting of convex, balanced sets.
+\end{defn}
+
+A simple lemma immediately falls out. 
+
+\begin{lem} \label{lem:3.11}
+  Every normed space is a LCTVS.
+\end{lem}
+\begin{proof}
+  The set of open balls centered at the origin is a neighborhood basis of the origin. Every open ball is convex, since if $x,y \in D_r(z)$, then $\|\lambda x + (1-\lambda)y - z\| = \|\lambda(x-z) + (1-\lambda)(y-z)\| \le \lambda \|x-z\| + (1-\lambda)\|y - z\|$. 
+\end{proof}
+
+We now aim to prove that every LCTVS is a metric absolute retract. We will follow S. Willard's outline \cite{willard}, which is ultimately based off J. Dugundji's famous proof \cite{dugundji}.We will divide the proof into three lemmas and a theorem. 
+
+The first lemma is a classic result, originally due to M. H. Stone \cite{stone}, that every metric space is paracompact. We present a proof due to M. E. Rudin \cite{rudin}.
+
+\begin{thm}[M. E. Rudin]\label{thm:3.6}
+  Every metric space is paracompact. 
+\end{thm}
+\begin{proof}
+  Let $\mathcal{C} = \{U_i\}_{i\in I}$ be an open cover of a metric space $(X,d)$. By the well-ordering theorem, there exists a well-order of $I$, namely, $\prec$. 
+
+  For an arbitrary $i$, we will define $V_{i,n}$ inductively on $n$. 
+
+  For a given $x$, the set $\{i \in I : x \in U_i\}$ is non-empty, since $\mathcal{C}$ is a cover. Since $\prec$ is a well order, there exists a minimum element, say, $i$. For a fixed $i$, consider the set of $x$ such that $i$ is the smallest index such that $x\in U_i$. 
+
+  Let $A_i$ be this set. Let $A_{i,1} = \{x \in A_i: D_3(x) \subset U_i\}$, and let $V_{i,1} = \bigcup_{x\in A_{i,1}} D_1(x)$.   
+
+  Once we have selected $A_{i,2}, \ldots, A_{i, n-1}$ and $V_{i,2}, \ldots, V_{i,n-1}$, we want to choose $A_{i,n}$ consisting of every $x$ that fulfills the following three properties:
+  \begin{enumerate}[(a)]
+    \item \label{pro:a}
+    $i$ is the smallest element of $I$ such that $x$ is contained in $U_i$. 
+    \item \label{pro:b}
+    If $ k < n$, then $x \not\in V_{j,k}$ for every $j$ in $I$.
+    \item \label{pro:c}
+    \[D_{3 \cdot 2^{-n}}(x)\subset U_i\]
+  \end{enumerate}
+
+  Since $A_{i,n}$ may just be empty, we can always pick it to satisfy these properties. We then define $V_{i,n}$ as follows:
+  \[
+    V_{i,n} = \bigcup_{x \in A_{i,n}} D_{2^{-n}}(x)
+  \]
+
+  We claim that $\mathcal{G} = \{V_{i,n}\}_{i \in I, n \in \mathbb N}$ is a locally finite refinement of $\mathcal{C}$. 
+
+  First, we prove that $\mathcal{G}$ is a refinement. For any $i,n$ if $x \in V_{i,n}$, then $x\in U_i$. Thus $V_{i,n} \subset U_i$. 
+
+  Second, we prove that $\mathcal{G}$ is a cover.
+
+  Let $x\in X$, and let $i$ be the smallest index such that $x \in U_i$. Since $U_i$ is open, pick $n$ such that $D_{3 \cdot 2^{-n}}(x) \subset U_i$. If $x$ is not in any  $V_{j,k}$ for $j\neq i$ and $k < n$, then $x$ satisfies \ref{pro:a}, \ref{pro:b}, and \ref{pro:c}, so $x \in A_{i,n}$, and $x \in D_{2^{-n}}(x)\subset V_{i,n}$. On the other hand, $x \in V_{j,k}$ for some $k < n$ and $j \neq i$. Thus, $x \in V_{i,n} \in \mathcal{G}$
+
+  Finally, we prove that $\mathcal{G}$ is locally finite. Let $x \in X$, and let $i$ be the minimum index such that $x \in V_{i,n}$ for some $n$. Since $V_{i,n}$ is a union of open balls, it is open and we may choose $j$ such that $D_{2^{-j}}(x) \subset V_{i,n}$. We now wish to prove the following two properties.
+  \begin{enumerate}
+    \item \label{pro:1}
+    If $m \ge n+j$, then for all $k \in I$, we have $D_{2^{-(n+j)}}(x) \cap V_{k,m} = \emptyset$. 
+    \item \label{pro:2}
+    If $m < n+j$ then $D_{2^{-(n+j)}}(x) \cap V_{k,m} \neq \emptyset$, for at most one $k$.
+  \end{enumerate}
+  We now prove \ref{pro:1}. 
+
+  $m \ge n+j\ge n+1 > n$. If for some $k \in I$, there is some $y \in A_{k,m}$, then by \ref{pro:b}, $y \not \in V_{i,n}$, and so $y \not\in D_{2^{-j}}(x)$, or $d(x,y) \ge 2^{-j}$. 
+
+  We now claim that $D_{2^{-(n+j)}}(x) \cap D_{2^{-m}}(y) = \emptyset$. 
+
+  Let $x' \in D_{2^{-(n+j)}}(x)$. Since $d(x,y) \ge 2^{-j} \ge 2^{-(n+j)} \ge d(x',x)$, we have the following:
+  \begin{align*} 
+    d(x',y) &\ge |d(x,x') - d(x,y)| = d(x,y) - d(x,x') \ge 2^{-j} - 2^{-(n+j)}\\
+            &\qquad \qquad= 2^{-j}(1- 2^{-n}) \ge 2^{-j}(1-2^{-1}) = 2^{-(j+1)}\ge 2^{-m}
+  \end{align*}
+  Therefore, $x'\not\in D_{2^{-m}}(y)$. 
+
+  Let $y' \in D_{2^{-m}}(y)$. Then we have the following:
+  \begin{align*}
+    d(x,y') &\ge |d(x,y) - d(y,y')| \ge 2^{-j} - 2^{-m} \\
+            &\qquad \ge 2^{-j}(1 - 2^{-m+j})\ge 2^{-j}(1 - 2^{-n})\ge 2^{-j} \cdot 2^{-n} = 2^{-(j+n)}
+  \end{align*}
+  Therefore, $y' \not\in D_{2^{-(n+j)}}(x)$, and so we have proven the claim. Since $y \in A_{k,m}$ was arbitrary, $V_{k,m} \cap D_{2^{-(n+j)}} = \emptyset$.  
+
+  Now, we prove \ref{pro:2}. 
+
+  Let $p \in V_{\alpha,m}$ and let $q \in V_{\beta,m}$. Suppose WLOG $\alpha \prec \beta$. We want to show that $d(p,q) > 2^{-(n+j - 1)}$. 
+
+  There exist $y \in A_{\alpha, m}$ and $z \in A_{\beta, m}$ such that $p \in D_{2^{-m}}(y) \subset V_{\alpha,m}$ and $q \in D_{2^{-m}}(z) \subset V_{\beta, m}$. By \ref{pro:c}, $D_{3 \cdot 2^{-m}}(y) \subset U_\alpha$. However, by \ref{pro:a}, $\beta$ is the smallest index such that $z \in U_\beta$, so $z$ cannot be in $U_\alpha$. Consequently, $z \not\in D_{3\cdot 2^{-m}}(y)$ so $d(y,z) \ge 3 \cdot 2^{-m}$. Thus, we have the following:
+  \begin{align*}
+    3\cdot 2^{-m} &\le d(y,z) \le d(y,p) + d(p,q) + d(q,z) < 2 \cdot 2^{-m} + d(p,q)\\
+    \implies  2^{-n - j + 1} &\le 2^{-m} < d(p,q)
+  \end{align*}
+
+  Therefore, either $p$ or $q$ can be in $D_{2^{-(n+j)}}(x)$. If both $p$ and $q$ were to be in $D_{2^{-(n+j)}}(x)$, then we would have the following:
+  \[
+    2^{-n-j+1} < d(p,q) \le d(p,x) + d(x,q) \le 2 \cdot 2^{-(n+j)} 
+  \]
+  This is a contradiction. As a result, either $V_{\alpha,m}$ or $V_{\beta, m}$ have nonempty intersection with $D_{2^{-(n+j)}}(x)$. 
+
+  Suppose that more than one $V_{k,m}$ intersects $D_{2^{-(n+j)}}(x)$, say $V_{\alpha, m}$ and $V_{\beta, m}$. Since $\prec$ is a well-order, either $\alpha \prec \beta$ or $\beta \prec \alpha$. Then, as shown above, only one of these can meet $D_{2^{-(n+j)}}(x)$. Thus, we have a contradiction, and at most one $V_{k,m}$ intersects $D_{2^{-(n+j)}}(x)$.  
+
+  Together, \ref{pro:1} and \ref{pro:2} imply that $D_{2^{-(n+j)}}(x)$ is a neighborhood of $x$ meeting finitely many sets from $\mathcal{G}$. Indeed, $D_{2^{-(n+j)}}(x)$ can meet at most $n+j-1$ elements of $\mathcal{G}$. Thus, $\mathcal{G}$ is locally finite, and so $(X,d)$ is paracompact.
+\end{proof}
+
+For the next step in the proof, we introduce the following terminology.
+
+\begin{defn}
+  Let $(X,d)$ be a metric space, and let $A$ be a closed subset of $X$. A cover $\mathcal{U}$ of $X\setminus A$ is said to be a \emph{canonical cover} if it is locally finite cover and satisfies the two following properties:
+  \begin{enumerate}
+    \item \label{pro:3}
+    If $a \in \partial A = A \setminus \mathrm{int\, }(A)$, then every neighborhood of $a$ meets infinitely many elements of $\mathcal{U}$. 
+    \item \label{pro:4}
+    If $a \in A$, and $W$ is any neighborhood of $a$, then there exists a neighborhood of $a$, $W'$, such that, for every $U \in \mathcal{U}$, if $U$ meets $W'$, then $U$ is contained in $W$.
+  \end{enumerate}
+\end{defn}
+
+We are now ready for the next lemma.
+
+\begin{lem}\label{lem:3.25}
+  For a metric space $(X,d)$ and a closed subset $A$ of $X$, there exists a canonical cover of $X \setminus A$.
+\end{lem}
+\begin{proof}
+  For $x \in X \setminus A$, let $U_x = D_r(x)$, where $r < \frac12 d(x,A)$. Since $X\setminus A$ is open, $d(x,A) > 0$, so $\{U_x\}_{x\in X}$ is an open cover of $X$. By \fullref{thm:3.6}, there is a locally finite refinement $\mathcal{U}$. We claim that $\mathcal{U}$ fulfills \ref{pro:3} and \ref{pro:4}. 
+
+  Let $a \in \partial A$, and let $W$ be a neighborhood of $a$. Suppose for contradiction that $W$ contains finitely many elements of $X\setminus A$, say $x_1,\ldots, x_n$. Let $\delta < \min \{d(a, x_i)\}_{i=1}^n$. Then $D_\delta(a) \cap (X\setminus A) = \emptyset$, and so $D_\delta(a) \subset A$. Since the interior of a set is the largest open set contained in it, $D_\delta(a) \subset \mathrm{int\, } A$. This means $a \not\in \partial A$, which is a contradiction. 
+
+  Let $D_r(a) \subset W$. By above, there is a sequence of distinct points $(x_i)_1^\infty \subset (X \setminus A)\cap D_{r/2}(a)$. Since $d(x_i, a) < \frac{r}2$, we have $d(x_i, A) \le \frac{r}2$. Let $r' < \frac12 d(x_i, A) \le \frac{r}4$. Let $U_{x_i} = D_{r'}(x_i)$. 
+
+  Let $y \in U_{x_i}$. We have the following:
+  \[
+    d(y,a) \le d(y,x_i) + d(x_i, a) < \frac{3r}{4}
+  \]
+  Therefore, $y \in D_r(a)$, and so $U_{x_i} \subset D_r(a) \subset W$. Since $\mathcal{U}$ is a refinement, for every $U_{x_i}$, there is some $U \in \mathcal{U}$ such that $U \subset U_{x_i} \subset W$, and so $W$ meets infinitely many sets from $\mathcal{U}$ and \ref{pro:3} is proved. 
+
+  Let $a$ in $A$ and let $W$ be a neighborhood of $a$. Let $D_r(a) \subset W$. Let $W' = D_{r/3}(a) \subset W$. Suppose that some $U \in \mathcal{U}$ has nonempty intersection with $W'$, i.e. there is some $y \in U \cap W'$. Since $U \subset U_x$ for some $x$, $y$ is in $U_x \cap W'$. Thus, we have the following:
+  \[
+    d(x,a) \le d(x,y) + d(y,a) < \frac12 d(x,A) + \frac{r}3 \le \frac12 d(x,a) + \frac{r}3
+  \]
+
+  Therefore, $d(x,a) < \frac{2r}3$. 
+
+  Let $z \in U \subset U_x$. Then we have the following:
+  \[
+    d(z,a) \le d(z,x) + d(x,a) \le \frac12 d(x,A) + \frac{2r}3 \le \frac12 d(x,a) + \frac{2r}3 < r
+  \]
+  Therefore, $U \subset D_r(a) \subset W$, and \ref{pro:4} is proved.
+\end{proof}
+
+Now that we have established the existence of a canonical cover, we prove the existence of an auxiliary function that will be used in the extension theorem.
+\begin{lem}\label{lem:3.26}
+  Let $(X,d)$ be a metric space, and $A \subset X$ closed. Let $\mathcal{U}$ be a canonical cover of $X\setminus A$. For every $U_0 \in \mathcal{U}$, consider the following function:
+  \begin{equation*}
+    \lambda_{U_0}(x) = \displaystyle\frac{d(x, X \setminus U_0)}{\displaystyle\sum_{U\in \mathcal{U}}d(x, X \setminus U)}
+  \end{equation*}
+  Every $\lambda_{U_0}$ is continuous on $X\setminus A$, and if $\alpha_U$ is a real number, for every $U \in \mathcal{U}$, then $\displaystyle\sum_{U \in \mathcal{U}} \alpha_U \lambda_U(x)$ is continuous on $X\setminus A$.
+\end{lem}
+\begin{proof}
+  If $d(x, X\setminus U) \neq 0$, then $x \in U$. Since $\mathcal{U}$ is locally finite, it is also point finite, so $x$ is in finitely many $U_i \in \mathcal{U}$. Therefore, only finitely many $d(x, X\setminus U)$ are non-zero, so $\sum_{U\in \mathcal{U}} d(x, X\setminus U)$ is always finite. 
+
+  Since $\mathcal{U}$ is a cover, $\sum_{U \in \mathcal{U}} d(x, X\setminus U) \neq 0$, since $x$ is in some $U$. 
+
+  Therefore, $\lambda_{U_0}(x)$ is indeed well-defined. 
+
+  Let $x \in X \setminus A$. There exists a neighborhood $W$ of $x$ meeting finitely many elements of $\mathcal{U}$, say $U_1, \ldots, U_n$. We have the following:
+  \[
+    \lambda_{U_0}\restriction W = \displaystyle\frac{d(x, X \setminus U_0)}{\displaystyle\sum_{i=1}^{n}d(x, X \setminus U_i)}
+  \]
+  Therefore, $\lambda_{U_0}\restriction W$ is a rational function of continuous functions and is itself continuous. Therefore $\lambda_{U_0}$ is continuous on $x$, and since $x$ was arbitrary, it is continuous on $X\setminus A$. 
+
+  Further, we have the following:
+  \[
+    \displaystyle\sum_{U \in \mathcal{U}} \lambda_U(x) = \displaystyle\frac{\sum_{U' \in \mathcal{U}} d(x, X \setminus U')}{\sum_{U \in \mathcal{U}} d(x, X \setminus U)} = 1
+  \]
+  In some neighborhood $W$ of $x$, finitely many $d(x, X \setminus U_i)$ are non-zero, so finitely many $\alpha_{U_i}\lambda_{U_i}(x)$ are non-zero, so $\sum_{U \in \mathcal{U}} \alpha_U\lambda_U(x)$ is continuous at every point in $X \setminus A$. 
+\end{proof}
+
+With all our lemmas out of the way, we are ready to prove Dugundji's theorem. 
+\begin{thm}[Dugundji's Theorem]\label{thm:3.27}
+  Every locally convex topological vector space is a metric absolute retract.
+\end{thm}
+\begin{proof}
+  Let $(X,d)$ be a metric space, and let $A \subset X$ be closed. Let $L$ be a locally convex topological vector space, and let $f:A \to L$ be a continuous function. 
+
+  Since $X$ is a metric space, and $A$ is closed, by \fullref{lem:3.25}, there is a canonical cover of $X\setminus A$. Let this canonical cover be $\mathcal{U}$.
+  
+  Let $\lambda_U$ be the function given in \fullref{lem:3.26}.
+
+  For every $U$ in $\mathcal{U}$, pick $x_U \in U$. Since $d(x_U, A) = \inf_{a\in A} d(x_U, a)$, for every $\varepsilon>0$, there is some $a_u \in A$ such that $d(x_U, A) \le d(x_U, a_U) < d(x_U, A) + \varepsilon$. Letting $\varepsilon = d(x_U, A)$, we find $a_U$ such that $d(x_U, a_U) < 2 d(x_U, A)$. 
+
+  Define $F: X \to L$ as follows:
+  \[
+    F(x) = \begin{cases}
+      \displaystyle\sum_{U \in \mathcal{U}} \lambda_U(x) \cdot f(a_U) & x \in X\setminus A\\
+      f(x) & x \in A
+    \end{cases}
+  \]
+  $F(x)$ is well-defined. By \fullref{lem:3.26}, $F(x)$ is continuous on $X\setminus A$. We must show that it is continuous on $A$. 
+
+  Let $a \in A$ and let $V$ be a convex neighborhood of $F(a) = f(a)$. Since $f$ is continuous, there exists some $\delta > 0$ such that $F(D_\delta(a)\cap A) = f(D_\delta(a)) \subset V$. Let $W = D_{\delta/3}(a) \subset X$. By \ref{pro:4}, there is a $W'\subset W$ such that for $U \in \mathcal{U}$, if $U\cap W' \neq \emptyset$, then $U \subset W$. Therefore, if $x_U \in W'$, then $U \cap W' \neq \emptyset$, and so $U \subset W$. 
+  \[
+    x_U \in W' \implies d(x_U, a) < \frac{\delta}3 \implies d(x_U, a_U) < \frac{2\delta}3
+  \]
+  Therefore, we have the following:
+  \[
+    d(a_U, a) \le d(a_U, x_U) + d(a, x_U) < \delta \implies f(a_U) \in V
+  \]
+  Again, there is a neighborhood of $a$, $W''\subset W'$ such that $W''\cap U \neq\emptyset \implies U \subset W'$. 
+
+  Let $x \in W''(X\setminus A)$. Since $\mathcal{U}$ is locally finite, let $U_1, \ldots, U_n$ be the elements of $\mathcal{U}$ containing $x$. Thus, $x \in W'' \cap U_i \implies U_i \subset W'$, and so $x_{U_i} \in W'$. By above, we find that $f(a_{U_i}) \in V$. 
+
+  We have the following:
+  \[
+    F(x) = \sum_{i=1}^n \lambda_{U_i}(x) \cdot f(a_{U_i}) = \displaystyle\sum_{i=1}^{n} \displaystyle\frac{d(x, X \setminus U_i)}{\sum_{j=1}^{n}d(x, X\setminus U_j)} \cdot f(a_{U_i})
+  \]
+  Notice that $ \displaystyle\sum_{i=1}^{n} \displaystyle\frac{d(x, X \setminus U_i)}{\sum_{j=1}^{n}d(x, X\setminus U_j)} = 1$, so $F(x)$ is a convex combination of $f(a_{U_i})$. Therefore, $F(x) \in V$, and so $F(W''\cap (X\setminus A)) \subset V$. 
+
+  If $x \in W'' \cap A$, then $F(x) = f(x) \in V$. Therefore, $F(W'') \subset V$, and so $F$ is continuous on $X$. Thus, $F$ is our desired extension.
+\end{proof}
+
+From this, we attain Hausdorff's extension theorem as a very nice corollary. 
+\begin{cor}[Hausdorff Extension Theorem] \label{cor:3.28}
+  Let $(X,d)$ be a metric space, and $A$ a closed subspace of $X$. Let $d'$ be a metric on $A$ that is equivalent to $d$ restricted to $A$. There exists an extension of $d'$ to $X$ that is equivalent to $d$ on $X$.
+\end{cor}
+\begin{proof}
+  For $a \in A$, define $r_a: A \to \mathbb R$ by $r_a(x) = d(a,x)$. Fix $a \in A$ and define $\varphi$ on $A$ by $\varphi(x)(y) = (r_x - r_a)(y) = d(x,y) - d(a,y)$. Let $C(A)$ and $C(X)$ be the normed spaces of real valued bounded continuous functions on $A$ and $X$ respectively with the supremum norm. Then $\varphi:A \to C(A)$. We now show that $\varphi$ is continuous.
+
+  Let $x \in A$ and $\varepsilon > 0$. Let $\delta < \varepsilon$. Then $d(x,y) < \delta < \varepsilon$ implies that for all $z \in A$, $|d(x,z) - d(y,z)| < d(x,y) < \varepsilon$. Therefore, we have the following:
+  \begin{align*}
+    \sup_{z\in A} |d(x,z) - d(y,z)| &= \sup_{z\in A} |r_x(z) - r_y(z)| = \|r_x - r_y\| \\
+                                    &\qquad \qquad = \|(r_x - r_a) - (r_y - r_a) \| = \| \varphi(x) - \varphi(y)\| < \varepsilon
+  \end{align*}
+  Therefore, $\varphi$ is continuous. 
+
+  Since $C(A)$ is a normed space, by \fullref{lem:3.11}, it is also a locally convex topological vector space. By \fullref{thm:3.27}, $C(A)$ is a metric absolute retract, so there exists a continuous extension of $\varphi$ to $X$. Let $\Phi: X \to C(A)$ be this extension.
+
+  Let $L = C(A) \times \mathbb R \times C(X)$ with the norm $\|(f, p, g)\| = \max (\|f\|, |p|, \|g\|)$. For $x\in X$, let $\alpha_x(y) = d(x,y)$. 
+
+  Define the map $F: X \to L$ by $x \mapsto (\Phi(x), d(x, A), d(x,A)\cdot \alpha_x)$
+
+  Let $x \in X$ and $\varepsilon > 0$. Let $\delta_1, \delta_2, \delta_3$ guaranteeing the following:
+  \begin{align*}
+    d(x,y) < \delta_1 &\implies \|\Phi(x) - \Phi(y)\| < \varepsilon\\
+    d(x,y) < \delta_2 &\implies |d(x,A) - d(y,A)| < \varepsilon\\
+    d(x,y) < \delta_3 &\implies \|\alpha_x \cdot d(x,A) - \alpha_y \cdot d(y,A)\| < \varepsilon
+  \end{align*} 
+
+  Let $\delta < \min\{\delta_1, \delta_2, \delta_3\}$. Then $d(x,y) < \delta \implies \|F(x) - F(y)\| < \varepsilon$, so $F$ is continuous. 
+
+  Now we show that $F$ is an isometry on $A$. 
+
+  $F\restriction A (a) = (\Phi(a), d(a, A), d(a, A) \cdot \alpha_a) = (\varphi(a), 0, 0)$, so $\|F \restriction A(a)\| = \|\varphi(a)\|$. We then have the following:
+  \begin{align*}
+    \|F\restriction A(a) - F \restriction A (b) \|&=\|\varphi(a) - \varphi(b)\| = \|r_x - r_a - r_x + r_b\| = \|r_a - r_b\| \\
+                                &= \sup_{c \in A} |r_a(c) - r_b(c) | = \sup_{c\in A} |d(a,c) - d(b,c)| \le d(a,b)
+  \end{align*}
+
+  Thus, $\|F\restriction A(a) - F \restriction A (b) \|\le d(a,b)$. Again, we have the following:
+  \[
+    \sup_{c\in A} |d(a,c) - d(b,c)| \ge |d(a,b) - d(b,b)| = d(a,b)
+  \]
+
+  Therefore, $F$ is an isometry on $A$. 
+
+  Finally, we prove that $F$ is a homeomorphism on $X$. 
+
+  Let $x\neq y \in X$. If $F(x) = F(y)$ then $d(y, A) = d(x,A) \implies \alpha_x = \alpha_y \implies d(x,z) = d(y,z)$, for every $z$. Letting $z = x$, we get $d(y,x) = 0$, which is a contradiction. Thus, $F$ is injective, and so $F^{-1}: Y = F(X) \to X$ is well defined.  
+
+  Let $Y \ni y' = (\Phi(y), d(y,A), d(y,A) \alpha_y)$, and $y = F^{-1}(y') \in X \setminus A$.
+
+  Let $\varepsilon > 0$, and let $\delta < \frac{\varepsilon}{d(y,A)}$. If $\|x' - y'\| < \delta < \frac{\varepsilon}{d(y,A)}$, and $F^{-1}(x') = x$, then we have the following:
+  \begin{align*}
+    \|x' - y'\| &= \|(\Phi(x) - \Phi(y), d(x,A) - d(y,A), d(x,A)\cdot \alpha_x - d(y,A)\cdot \alpha_y)\|\\
+                &\ge \|d(x,A) \cdot\alpha_x - d(y,A) \cdot \alpha_y\|= \sup_{z\in X} |d(x,A) d(x,z) - d(y,A) d(y,z)| \\
+                &\ge |d(x, A) d(x,x) - d(y,A)d(y,x)|= d(y,A)d(x,y) 
+  \end{align*}
+  Therefore, $d(x,y) < \varepsilon$, and so $F^{-1}$ is continuous. 
+
+  Finally, since $F$ is a homeomorphism, the metric defined by $d^\ast(x,y) = \| F(x) - F(y)\|$ is compatible with $d$ on $X$. 
+
+  Let $d'$ be a metric equivalent to $d$ on $A$. Let $r'_a$ by $r'_a(x) = d'(a,x)$, and $\varphi'(x) = r'_x - r'_a$. Since $d$ is equivalent to $d'$, $(A,d)$ and $(A,d')$ have the same topology, and so the domain of the extension of $\varphi'$ is $(X,d)$. Thus, $F'$ given by $\Phi'$ is an isometry on $A$ with respect to $d'$, and is a homeomorphism on $X$ with respect to $d$. Therefore, the metric $d'^\ast(x,y) = \|F'(x) - F'(y)\|$ is equivalent to $d$ on $X$ and exactly the same as $d'$ on $A$. In this way, $d'$ is extended to a metric equivalent to $d$ on $X$. 
+\end{proof}
+It is interesting to note, at the time of Hausdorff's original proof in 1930, the paracompactness of metric spaces would not be discovered for 18 years.
+
+We now have all the necessary extension theorems necessary to investigate the Lebesgue properties we need. 
+\section{Lebesgue Space Properties}
+
+The first characterization of Lebesgue spaces we will investigate is as follows:
+$(X,d)$ is a Lebesgue space if and only if for every pair of disjoint closed sets, $E$ and $F$, $d(E,F) > 0$.
+
+To prove this, we follow A. A. Monteiro and M. M. Peixoto. Their paper, The Lebesgue Number and Uniform Continuity, \cite{mont-peix} is incredibly well-written, albeit in french.
+
+As a seemingly weak start, we prove the forward direction for metric spaces in which only binary covers, i.e. covers with only two sets, have Lebesgue numbers. As we shall see, this is in fact strong enough to prove our claim.
+
+\begin{lem}\label{lem:4.1}
+  If $(X,d)$ is a metric space, and binary cover of $X$ has a Lebesgue number, then every pair of disjoint closed sets has positive distance.
+\end{lem}
+\begin{proof}
+  Let $E$ and $F$ be disjoint closed sets. Let $E' = X \setminus E$ and $F' = X \setminus F$. $E'$ and $F'$ are open and cover $X$. By hypothesis, there exists $\varepsilon >0$ such that, for every $x \in X$, $D_\varepsilon(x) \subset E'$ or $F'$. 
+
+  Let $x' \in E$. Then $x' \not\in E'$, so $D_\varepsilon(x') \subset X \setminus F = F'$. 
+
+  Let $x'' \in F$. Then $x'' \not\in E''$, so $D_\varepsilon(x'')\subset X \setminus E = E'$. 
+
+  Therefore, $d(x', F) \ge \varepsilon$ and $d(x'', E) \ge \varepsilon$, so $d(F, E) \ge \varepsilon > 0$.
+\end{proof}
+\begin{lem} \label{lem:4.2}
+Let $(X,d)$ be a metric space. If every pair of disjoint closed sets has positive distance, then every open cover of $X$ consisting of two sets has a Lebesgue number.
+\end{lem}
+\begin{proof}
+  Let $\mathcal{C} = \{U, U'\}$ be a binary cover. Suppose that neither $U$ nor $U'$ are the empty set or $X$. Then $F = X \setminus U$ and $F' = X \setminus U'$ are two closed and nonempty subsets of $X$. 
+
+  If $x \in F$, then $x \not \in U$, so $x$ must be in $U'$, and thus not in $F'$. Similarly if $x' \in F'$, then $x \not\in F$. Thus, $F$ and $F'$ are disjoint. 
+
+  By hypothesis, there is some $r > 0$ such that $d(F, F') = r$. 
+
+  We claim that $\frac{r}2$ is a Lebesgue number for $\mathcal{C}$. 
+
+  Suppose for contradiction that there is some $x \in X$ such that $D_{\frac{r}2}(x) \not\subset U$ or $ U'$.  Then, there are $x', x'' \in D_{\frac{r}2}(x)$ such that $x' \not \in U$ and $x'' \not\in U'$. Then, we have the following:
+  \[
+    d(x,x'), d(x,x'') < \frac{r}2 \implies d(x', x'') \le d(x', x) + d(x, x'') < r
+  \]
+  
+  $x' \in F$ and $x'' \in F'$. $r = d(F, F')\le d(x', x'') < r$. This is a contradiction, so $\frac{r}2$ is a Lebesgue number.
+\end{proof}
+Now, we show that the property of a space having Lebesgue numbers for binary covers is equivalent to the space having Lebesgue numbers for finite covers. To do this, we need a small intermediary lemma due to S. Lefschetz  about shrinkings \cite{lefschetz}.
+\begin{defn}
+  Let $\mathcal{U} = \{U_i\}_{i\in I}$ be an open cover of some topological space $X$. $\mathcal{V} = \{V_i\}_{i \in I}$ is a \emph{shrinking} of $\mathcal{U}$ if it is an open cover of $X$, it is indexed by the same set, and for every $i \in I$, $\overline{V}_i \subset U_i$. If a shrinking of an open cover $\mathcal{U}$ exists, then $\mathcal{U}$ is said to be \emph{shrinkable}.
+\end{defn}
+\begin{lem}
+  Every finite open covering of a normal space is shrinkable.
+\end{lem}
+\begin{proof}
+  Let $X$ be a normal space and let $\{U_1, \ldots, U_n\}$ be an open covering of $X$. 
+
+  Let $F = X \setminus U_1$ and $F' = X \setminus \left(\bigcup_{i=2}^n U_i\right)$. 
+
+  If $x \in F$, then $x$ is not in $U_1$, and so $x \in \bigcup_{i=2}^n U_i$. Therefore, $x \not\in F'$. Similarly, if $x \in F'$, then $x \not\in F$. Thus $F$ and $F'$ are disjoint. 
+
+  Since $X$ is normal, there exist disjoint open sets $U$ and $V_1$ such that $F \subset U$ and $F' \subset V_1$. 
+
+  Since $U$ and $V_1$ are disjoint, $V_1 \subset X \setminus U$. $X\setminus U$ is closed, so $\overline{V_1} \subset X \setminus U \subset U_1$. Since $X \setminus \left(\bigcup_{i=2}^n U_i\right) \subset V_1$, $\{V_1, U_2, \ldots, U_n\}$ is an open cover. Shrinking the rest in the same manner, we obtain a satisfactory shrinking. 
+\end{proof}
+\begin{lem}\label{lem:4.5}
+  Let $(X,d)$ be a metric space. Finite covers of $X$ have Lebesgue numbers if and only if binary covers do.
+\end{lem}
+\begin{proof}
+  $(\implies)$ Binary covers are finite covers. 
+
+  $(\impliedby)$ Let $\mathcal{U} = \{U_1, \ldots, U_n\}$ be a finite cover of $X$. By \fullref{lem:3.8} metric spaces are normal, so $\mathcal{U}$ admits a shrinking $\mathcal{V} = \{V_1, \ldots, V_n\}$. Let $\mathcal{U}_i = \{U_i, X \setminus \overline{V}_i\}$. This is a binary open cover, so each $\mathcal{U}_i$ has a Lebesgue number $r_i > 0$. Let $r = \min\{r_i\}_{i=1}^n > 0$. This is a Lebesgue number for every $\mathcal{U}_i$.
+
+  Let $x \in X$. For every $i$, $D_r(x) \subset U_i$ or $X \setminus \overline{V}_i$. If for every $i$, $D_r(x)\not\subset U_i$, then, for every $i$, $D_r(x) \subset X \setminus \overline{V}_i$. We then have the following:
+  \[
+    D_r(x) \subset \bigcap_{i=1}^n (X \setminus \overline{V}_i) = X \setminus \bigcup_{i=1}^n \overline{V}_i = \emptyset
+  \]
+  This is a contradiction. Therefore, for some $i$, $D_r(x) \subset U_i$. 
+\end{proof}
+Now we present the final lemma.
+\begin{lem} \label{lem:4.6}
+  Let $(X,d)$ be a metric space. Finite covers have Lebesgue numbers if and only if arbitrary covers have Lebesgue numbers.
+\end{lem}
+\begin{proof}
+  $(\impliedby)$ Finite covers are arbitrary covers. 
+
+  $(\implies)$ Let $\mathcal{U} = \{U_i\}_{i\in I}$ be an open cover of $X$. 
+
+  Suppose for contradiction that $\mathcal{U}$ does not have a Lebesgue number. Then for $r_n = \frac1{n}$, there is some $x_n \in X$ such that $D_{r_n}(x_n) \not\subset U_i$, for all $i$. 
+
+  We claim the sequence $(x_n)_1^\infty$ has no accumulation point. 
+
+  Suppose for contradiction that $(x_n)$ has an accumulation point $p$. Then, there is a subsequence of $(x_n)$, $(x_{n_k})$, such that $x_{n_k}\to p$. 
+
+  Since $\mathcal{U}$ is a cover, $p \in U_i$ for some $i$. Since $U_i$ is open, let $\varepsilon>0$ such that $D_\varepsilon(p) \subset U_i$. 
+
+  Let $K$ such that for every $k > K$, $d(x_{n_k}, p) < \frac{\varepsilon}2$. Pick $k$ larger than $K$ and large enough, so that $\frac1{n_k} < \frac{\varepsilon}2$. Then,
+  \[
+    d(x_{n_k}, y) < \frac1{n_k} \implies d(y,p) \le d(y, x_{n_k}) + d(x_{n_k}, p) < \frac1{n_k} +  \frac{\varepsilon}2 < \varepsilon
+  \]
+  so $D_{1/n_k}(x_{n_k}) \subset U_i$. 
+
+  This is a contradiction, so $(x_n)$ does not have an accumulation point. 
+
+  Given a finite set of points $p_1, \ldots, p_n$, there are infinitely many $x_n$ such that $D(x_n, \frac1{n})$ does not contain any $p_k$, since, otherwise, some $p_k$ would be an accumulation point of $(x_n)$.   
+
+  Let $x_n \in U_i$. By assumption, there exists $y_n \in D_{1/n}(x_n)$ such that $y_n \not \in U_i$, so $y_n \neq x_n$. 
+
+  We will now construct two sequences $(x_{n_k})_{k=0}^\infty$ and $(y_{n_k})_{k=0}^\infty$ such that each $x_{n_k} \neq y_{n_k}$, $(x_{n_k})$ has no accumulation points, and $d(x_{n_k}, y_{n_k}) < \frac1{n_k}$. 
+
+  Let $x_{n_0} = x_1$. By above, we can pick $y_1 \in D_1(x_1) \setminus \{x_1\}$. 
+
+  Let $p_1 = x_1$ and $p_2 = y_1$. Pick $x_{n_1}$ such that $D_{1/n_1}(x_{n_1})$ does not contain $p_1$ or $p_2$, and pick $y_{n_1}$ in this ball, distinct from $x_{n_1}$. Then, let $p_3 = x_{n_1}$ and $p_4 = y_{n_1}$. We thus inductively extract exactly such sequences. 
+
+  Since $(x_{n_k})$ has no accumulation points, it is trivially closed. Since $d(x_{n_k}, y_{n_k}) \to 0$, these sequence have the same accumulation points, so $(y_{n_k})$ is also closed. Thus, we have disjoint closed sets whose distance is $0$. By \fullref{lem:4.1}, there are binary covers of $X$ without a Lebesgue number. This is a contradiction, so a Lebesgue number for $\mathcal{U}$ does exist. 
+\end{proof}
+Now we conclude with a summarizing theorem. 
+\begin{thm}\label{thm:4.7}
+  $(X,d)$ is a Lebesgue space if and only if, for all disjoint closed sets $E,F$, $d(E,F)>0$.
+\end{thm}
+\begin{proof}
+  $(\implies)$ Every binary cover has a Lebesgue number, therefore, by \fullref{lem:4.1}, all disjoint closed sets have positive distance. 
+
+  $(\impliedby)$ By \fullref{lem:4.2}, every binary cover has a Lebesgue number. By \fullref{lem:4.5}, every finite cover has a Lebesgue number. By \fullref{lem:4.6} arbitary covers have Lebesgue numbers, so $(X,d)$ is Lebesgue Space.
+\end{proof}
+\[
+  \ast \ast \ast
+\]
+
+For the rest of this section, we will work to prove that every non-compact Lebesgue space has an equivalent metric, under which, it is no longer a Lebesgue space. 
+
+We begin with a few lemmas that tease out some basic properties of Lebesgue spaces.
+\begin{lem}\label{lem:4.8}
+  Let $(X,d)$ be a metric space and $Y$ a subspace of $X$. 
+
+  \begin{enumerate}
+    \item If $Y$ is a Lebesgue space, relative to $d$, then $Y$ is closed. \label{4.8.1}
+    \item If $(X,d)$ is a Lebesgue space and $Y$ is a closed subset of $X$, then $Y$ is a Lebesgue space. \label{4.8.2}
+  \end{enumerate}  
+\end{lem}
+\begin{proof}
+  We first prove \ref{4.8.1}.
+
+  We claim that if $(X,d)$ is a Lebesgue space, then it is complete. 
+
+  Let $(x_n)_1^\infty$ be a non-convergent Cauchy sequence in $X$. Further, no subsequence is convergent, since if it were, $(x_n)$ being Cauchy would imply that $(x_n)$ converges to the same point. Thus, $(x_n)$ has no accumulation points, and is thus closed. 
+
+  $X \setminus (x_n)$ is open, and $\mathcal{C} = \{X \setminus (x_n)\} \cup \{D_{1/n}(x_n) \setminus (x_k)_{k\neq n}\}_{n=1}^\infty$ is a cover of $(X,d)$. There is some $\varepsilon > 0$ such that, $\forall x \in X$, there exists $U_i \in \mathcal{C}$ such that $D_\varepsilon(x) \subset U_i$. For this $\varepsilon$, pick $N$ such that $m > N$ implies $d(x_N, x_m) <\varepsilon$. 
+
+  Then, $\forall m > N$, $x_m \in D_\varepsilon(x_N)$, but $x_m \not\in D_{1/N}(x_N) \setminus (x_k)_{k\neq N}$. Thus $D_{\varepsilon}(x_N) \not\subset U_i$  for any $U_i \in \mathcal{C}$. This is a contradiction, so $X$ is indeed complete. 
+
+  Thus, Lebesgue spaces are complete, and so $Y$ is closed in $X$. 
+
+  We now prove \ref{4.8.2}. 
+
+  Let $E, F$ be non-empty disjoint closed subset of $Y$. $E$ and $F$ are closed in $X$, so $d(E,F) > 0$. Thus $(Y,d)$ is Lebesgue.
+\end{proof}
+\begin{lem}
+  Let $(X,d)$ be a metric space and $E, F$ non-empty, closed, disjoint subsets of $X$. If $X = E \cup F$, then $(X, d)$ is a Lebesgue space if and only if $(E,d)$ and $(F,d)$ are Lebesgue spaces and $d(E,F) > 0$.
+\end{lem}
+\begin{proof}
+  $(\implies)$ Since $X$ is a Lebesgue space, then $d(E,F) > 0$. By \fullref{lem:4.8}, $(E,d)$ and $(F,d)$ are Lebesgue spaces. 
+
+  $(\impliedby)$ Let $H, J$ be closed, disjoint subsets of $X$. Suppose that $H \cap E, H \cap F, J \cap E, H \cap F \neq \emptyset$. Then we have the following:
+  \begin{align*}
+    d(E\cap H, E\cap J)&, d(F\cap H, F\cap J) > 0\\
+    d(E \cap H, F \cap J)&, d(E \cap J, F \cap H) > d(E, F) > 0
+  \end{align*}
+  Therefore, 
+  $$d(H, J) = \min\{d(E\cap H, E \cap J), d(E \cap H, F \cap J), d(F \cap H, E \cap J), d(F \cap H, F \cap J) \} > 0$$ 
+  so $X$ is a Lebesgue space.
+\end{proof}
+For this final lemma, we introduce the property of a metric space to be uniformly isolated.
+\begin{defn}
+  A metric space $(X,d)$ is said to be \emph{uniformly isolated} if there exists a positive constant $\eta$ such that, for all $x$ and $y$ in $X$, $d(x,y) \ge \eta$. 
+\end{defn}
+\begin{lem}\label{lem:4.9}
+  An unbounded metric space $(X,d)$ is a Lebesgue space if and only if there exist non-empty sets $A,B$ such that the following are true:
+  \begin{enumerate}[(a)]
+    \item $X = A \cup B$ \label{4.9.a}
+    \item $A$ bounded and a Lebesgue space \label{4.9.b}
+    \item $B$ is uniformly isolated \label{4.9.c}
+    \item $d(A,B) > 0$ \label{4.9.d}
+  \end{enumerate}
+\end{lem}
+\begin{proof}
+  $(\impliedby)$ Since $B$ is uniformly isolated, $B$ has no accumulation points in $B$. Further, every point in $A$ is positive distance from a point in $B$, so no point of $A$ is an accumulation point of $B$. Thus $B$ has no accumulation points and is closed. Let $E,F$ closed in $B$, $e \in E$, $f \in F$, 
+  $$d(e,f) \ge \eta > 0$$ so $d(E,F) > 0$. Therefore, $B$ is a Lebesgue space. 
+
+  $A$ is a Lebesgue space and $d(A,B) > 0$. By \fullref{lem:4.9}, $X$ is a Lebesgue space. 
+
+  $(\implies)$ Let $x^\ast \in X$. We want to show that there is some $n^\ast$ such that $X \setminus B_{n^\ast}(x^\ast)$ is uniformly isolated. Suppose for contradiction that such $n^\ast$ does not exist. 
+
+  Then, $X \setminus B_1(x^\ast)$ is not uniformly isolated, so there exist $x_1\neq y_1 \in X \setminus B_1(x^\ast)$ such that $d(x_1, y_1) < 1$. 
+
+  We inductively pick points $x_i \neq y_i$ such that the following hold:
+  \begin{enumerate}
+    \item $d(x_i, y_i) < \frac1{i}$
+    \item $x_l \neq y_m$, for $1\le l, m \le i$
+    \item $d(x^\ast, x_i), d(x^\ast, y_i) > i$
+  \end{enumerate}
+  Suppose that we have picked the first $k$ such $x_i$ and $y_i$. 
+
+  Let $n' = \max \{k+1, d(x^\ast, x_i), d(x^\ast, y_i)\}_{i=1}^k$. 
+
+  $X \setminus B_{n'}(x^\ast)$ is not uniformly isolated, so there exist $x_{k+1} \neq y_{k+1}\in X \setminus B_{n'}(x^\ast)$ such that $d(x_{k+1}, y_{k+1}) < \frac1{k+1}$. Since $(x_j)_1^k, (y_j)_1^k \subset B_{n'}(x^\ast)$, $x_{k+1}$ and $y_{k+1}$ are distinct from every $x_i, y_j$, $1 \le i, j \le k$. $x_{k+1}, y_{k+1} \not\in B_{k+1}(x^\ast)$, so $d(x^\ast, x_{k+1}), d(x^\ast, y_{k+1}) > k+1$. 
+
+  Thus, we get two sequences $(x_k)_1^\infty, (y_k)_1^\infty$ that are disjoint, and neither sequence has a limit point. If one did, say $(x_k)$ has a limit point $p$, then $d(x_n, p) < 1$ for infinitely many $n$. So, 
+  $$n < d(x_n, x^\ast) \le d(x_n, p) + d(x^\ast, p) \le 1 + d(x^\ast, p) < \infty$$ which is a contradiction. 
+
+  Since $d(x_k, y_k) < \frac1{k} \to 0$, they have the same limit points. Thus, $(x_k), (y_k)$ are closed and $d((x_k), (y_k)) = 0$, therefore $X$ is not a Lebesgue space, which is a contradiction. 
+
+  Therefore, $\forall x^\ast$, there is some $n^\ast$ such that $X \setminus B_{n^\ast}(x^\ast)$ is uniformly isolated. 
+
+  Let $A = B_{n^\ast}(x^\ast), B = X \setminus B_{n^\ast}(x^\ast)$, so $X = A \cup B$. 
+
+  $A$ is bounded by $2n^\ast$, and, since it is closed, by \fullref{lem:4.8}, $A$ is a Lebesgue space.
+
+  $B$ is uniformly isolated, so $B$ has no accumulation points in itself. Suppose some $a \in A$ is an accumulation point of $B$. Then there exists a sequence $(b_n)\subset B$ such that $d(b_n, a) \to 0$. Then, $(b_n)$ is Cauchy, which is a contradiction, since for every $\eta$, we can pick $n,m$ such that $0 < d(b_n,b_m) < \eta$, implying $B$ is not uniformly isolated. Thus, $B$ is closed, and $A \cap B = \emptyset$. Since $(X,d)$ is Lebesgue, $d(A,B) > 0$. 
+\end{proof}
+\begin{lem}\label{lem:4.11}
+  Let $(X,d)$ be a metric space. Suppose $(X,d)$ is a Lebesgue space, but is not compact. Then there exists a metric $d^\ast$ such that $(X, d^\ast)$ is a Lebesgue space, unbounded, and $d^\ast$ is equivalent to $d$. 
+\end{lem}
+\begin{proof}
+  In a non-compact set, there is a sequence $(x_n)_1^\infty$ with no accumulation points. Thus, let $$g(x) = \inf_{n\in \mathbb N} \left\{d(x, x_n) + \frac1{n}\right\}$$ and let $$f^\ast(x) = \frac1{g(x)}$$ 
+
+  $g(x) = 0$ if and only if $x$ is an accumulation point of $(x_n)$, so $g$ is never $0$, and $f(x_n) \ge n$. $g(x)$ is continuous since we have the following:
+  \[
+    g(x) = \inf_{n \in \mathbb N} \left\{d(x, x_n) + \frac1{n}\right\} \le \inf_{n \in \mathbb N} \left\{d(x,y) + d(y, x_n) + \frac1{n}\right\} = d(x,y) + g(y)
+  \]
+  Symmetrically, we have $g(y) \le d(x,y) + g(x)$, so $|g(x) - g(y)| \le d(x,y)$. 
+
+  For $\varepsilon > 0$, pick $\delta = \varepsilon$. 
+  $$|g(x)-g(y)| \le d(x,y) < \varepsilon$$
+
+  Therefore, $f^\ast(x)$ is continuous and unbounded. 
+
+  Let $d^\ast(x,y) = d(x,y) + |f^\ast(x) - f^\ast(y)|$. 
+
+  $d^\ast$ is a metric, and $d^\ast(x,y) \ge d(x,y)$.  
+
+  We will denote a $d$-open ball centered at $x$ with radius $r$ by $D_d(x,r)$ and a $d^\ast$-open ball centered at $x$ with radius $r$ by $D_{d^\ast}(x,r)$.
+  $$D_{d\ast}(x,r) = \{y : d^\ast(x,y) < r\} \subset \{y: d(x,y) < r\} = D_d(x,r)$$ Thus $d$-open balls are open in $d^\ast$. 
+
+  Let $x \in X$ and $r > 0$. We want $r'>0$ such that $D_d(x,r')\subset D_{d^\ast}(x,r)$, or equivalently, $d(x,y) < r' \implies d(x,y) + |f^\ast(x) - f^\ast(y)| < r$. 
+
+  Clearly, since $D_{d^\ast}(x, r) \subset D_d(x,r)$, a satifactory $r'$ is less than $r$. 
+
+  Choose some $r' \in (0, r)$, and pick $\delta > 0$ such that $d(x,y) < \delta \implies |f^\ast(x) - f^\ast(y)| < r - r'$. Let $r'' = \min\{\delta, r'\}$. $$d(x,y) < r'' \implies |f^\ast(x) - f^\ast(y)| < r - r'< r - d(x,y)$$ and so $d\ast(x,y) = |f^\ast(x) - f^\ast(y)| + d(x,y) < r$. 
+
+  Therefore, $D_{d^\ast}(x, r'') \subset B_d(x, r)$, and so $d$ and $d^\ast$ are equivalent. 
+
+  $d^\ast \ge d$, so if $E$ and $F$ are disjoint, non-empty, closed subsets of $X$, then $d^\ast(E, F) \ge d(E, F)$. Since $(X,d)$ is a Lebesgue space, by \fullref{thm:4.7}, $d(E,F) > 0$, so $d^\ast(E,F) > 0$, and, again, by \fullref{thm:4.7}, $(X,d^\ast)$ is a Lebesgue space.
+\end{proof}
+We finally arrive on the crucial theorem.
+\begin{thm}\label{thm:4.12}
+  Let $(X,d)$ be a Lebesgue space which is not compact. Then there exists a metric $d^{\ast\ast}$ which is equivalent to $d$ and such that $(X, d^{\ast \ast})$ is not a Lebesgue space.
+\end{thm}
+\begin{proof}
+  By \fullref{lem:4.11}, there exists a metric $d^\ast$ which is equivalent to $d$, is unbounded, and $(X, d^\ast)$ is a Lebesgue space. By \fullref{lem:4.9}, there exists a pair of nonempty, disjoint sets $A$ and $B$ such that, with respect to $d^\ast$, $A$ is bounded, $B$ is uniformly isolated, and $d^\ast(A,B) > 0$. 
+
+  Since $B$ is infinite, we can choose $(x_n)_1^\infty \subset B$ where they are all distinct. Since $B$ is uniformly isolated and $d^\ast(A,B) > 0$, $(x_n)$ has no accumulation points, and so is closed in $X$. 
+
+  As in \fullref{pro:2.2}, let $d^{\ast \ast}(x_n, x_m) = \left| \frac1{n} - \frac1{m}\right|$.
+  
+  As shown there, $d^{\ast \ast}$ generates the discrete metric, and so $d^{\ast \ast}$ is equivalent to $d^\ast$ on $(x_n)$. Since $d^\ast$ is equivalent to $d$, $d^{\ast \ast}$ is equivalent to $d$. 
+
+  By \fullref{cor:3.28}, there exists an extension of $d^{\ast \ast}$ to all of $X$ that is equivalent to $d$. 
+
+  However, $$d(x_{2n}, x_{2n+1}) = \left|\displaystyle\frac{1}{4n^2 + 2n}\right| \to 0 \implies d((x_{2n}), (x_{2n+1}))= 0$$ Therefore, $(X,d^{\ast\ast})$ is not a Lebesgue space.  
+\end{proof}
+\section{Uniform Continuity and Equivalent Metrics}
+Now that we have the powerful theorem in the form of \fullref{thm:4.12}, we now aim to prove \fullref{thm:2.3}. We will follow some of M. Atsuji's work \cite{atsuji}. Our main goal in this section is to prove that the property that every continuous function on a metric space is uniformly continuous implies that the metric space has the Lebesgue property. 
+
+We now present our first lemma. 
+
+\begin{lem} \label{lem:5.1}
+  Let $(X,d)$ be a metric space, and let $(x_n)_1^\infty$ be an infinite sequence in $(X,d)$. Suppose we have a sequence of pairwise disjoint open neighborhoods of each $x_n$, say $\{U_n\}_{n=1}^\infty$. Suppose that these two sequences satisfy the following properties:
+  \begin{enumerate}
+    \item $(x_n)$ has no accumulation points. \label{5.1.1}
+    \item For every $m\neq n$, $\overline{U}_m \cap \overline{U}_n = \emptyset$, and $U_n \subset D_{1/n}(x_n)$. \label{5.1.2}
+    \item There exists a sequence $(y_n)_1^\infty$ such that $d(x_n,y_n) \to 0$ and, for any $m$, each $y_n \not \in U_m$. \label{5.1.3}
+  \end{enumerate}
+  Then, there exists a function $f:(X,d) \to \mathbb R$ such that $f$ is continuous, but not uniformly continuous. 
+\end{lem}
+\begin{proof}
+  By \fullref{lem:3.8}, $(X,d)$ is normal. By \fullref{lem:3.7}, $\overline{U}_n$ is normal. Since $\{x_n\}$ and $\partial\overline{U}_n$ are closed disjoint subsets of the normal space $\overline{U}_n$, by \fullref{thm:3.8}, there exists a continuous function $f_n: \overline{U}_n \to [0,n]$, such that $f_n(x_n) = n$ and $f_n(\partial\overline{U}_n) \subset \{0\}$. 
+
+  Let $f_0: \bigcup_{n=1}^\infty \overline{U}_n \to \mathbb R$, given by $f_0\restriction \overline{U}_n = f_n$. We want to show that $f_0$ is continuous.
+
+  We claim that $\{\overline{U}_n\}_1^\infty$ is a locally finite colleciton of sets. 
+
+  Suppose for contradiction that every neighborhood of $p \in X$ meets infinitely many $\overline{U}_{n}$. 
+  Let $D_{1/n}(p)$ be such a neighborhood of $p$. Then it meets infinitely many $\overline{U}_{n}$, and, letting $\{\overline{U}_{n_k}\}_{k=1}^\infty$ be this subsequence, let $z_{n_k}$ be the points of intersection. 
+
+  $$U_{n_k} \subset D_{1/n_k}(x_{n_k})\implies z_{n_k} \in \overline{U}_{n_k} \subset \overline{D_{1/n_k}(x_{n_k})}\subset B_{1/n_k}(x_{n_k})$$ and so $d(z_{n_k}, x_{n_k}) \le \frac1{n_k}$. Then,
+  \[d(p, x_{n_k}) \le d(p, z_{n_k}) + d(z_{n_k}, x_{n_k}) \le \frac1{n} + \frac1{n_k}\to 0\]
+  and so $x_{n_k} \to p$. 
+
+  This is a contradiction. Therefore, our claim is proved. By \fullref{thm:3.2}, $f_0$ is continuous. 
+
+  We claim that $\bigcup_{n=1}^\infty \overline{U}_n = \overline{\bigcup_{n=1}^\infty U_n}$. 
+
+  If $p$ is a closure point of $U_n$, then it is also a closure point of $\bigcup_{n=1}^\infty U_n$, so $\bigcup_{n=1}^\infty \overline{U}_n \subset \overline{\bigcup_{n=1}^\infty U_n}$.
+
+  If $p$ is a closure point of $\bigcup_{n=1}^\infty U_n$ and it is a closure point of some $U_n$, then it is contained in $\bigcup_{n=1}^\infty \overline{U}_n$. 
+
+  Suppose for contradiction that $p$ is not a closure point of any $U_n$. Then, there exists a sequence $(z_{n_k})_1^\infty$ such that each $z_{n_k}$ is contained in $U_{n_k}$ and $z_{n_k}\to p$. 
+
+  By \ref{5.1.2}, $z_{n_k} \in D_{1/n_k}(x_{n_k})$, so we have the following:
+  \[
+    d(x_{n_k}, p) \le d(x_{n_k}, z_{n_k}) + d(z_{n_k}, p) \le \frac1{n_k} + d(z_{n_k}, p) \to 0
+  \]
+  Therefore, $p$ is an accumulation point of $(x_n)$, which is a contradiction. Thus, $p$ is closure point of some $U_n$, and the claim is proved. 
+
+  Let $g: X \setminus \bigcup_{n=1}^\infty U_n \to \{0\}$. Clearly $g$ is continuous. 
+
+  Further, if 
+  $$x \in \left(X \setminus \bigcup_{n=1}^\infty U_n\right) \cap \bigcup_{n=1}^\infty \overline{U}_n = \left(X \setminus \bigcup_{n=1}^\infty U_n\right) \cap \overline{\bigcup_{n=1}^\infty U_n} = \partial\overline{\bigcup_{n=1}^\infty U_n}$$ and so, as shown above,  $x$ is contained in some $\overline{U}_n$, and is thus in $\partial\overline{U}_n$. 
+
+  Therefore, $f_0(x) = f_n(x) = 0$, and so we may define $f: X \to \mathbb R$ by $$f\restriction X\setminus \bigcup_{n=1}^\infty U_n = g \qquad f\restriction \bigcup_{n=1}^\infty \overline{U}_n = f_0$$
+
+  By \fullref{thm:3.2}, $f$ is continuous. 
+
+  Now, we verify that $f$ is not uniformly continuous. 
+
+  Let $\varepsilon = \frac12$. Then, $\forall \delta > 0$, $d(x_n, y_n) < \delta$ implies $|f(x_n) - f(y_n)| = |n - 0| = n > \frac12$. Since $d(x_n, y_n) \to 0$, $f$ is not uniformly continuous. 
+\end{proof}
+
+\begin{lem}\label{lem:5.2}
+  Let $(X,d)$ be a metric space and let $(x_n)_1^\infty$ be an infinite sequence in $X$. If $(x_n)$ has no accumulation points, then there exists a sequence of open sets satisfying \ref{5.1.2}. If $(x_n)$ has infinitely many accumulation points, then this sequence of sets satisfies \ref{5.1.3}.
+\end{lem}
+\begin{proof}
+  Since $(x_n)$ has no accumulation points, every neighborhood of $x_1$ contains finitely many elements of $(x_n)$. Let $\{x_1, x_{1}^{(1)}, \ldots, x_{1}^{(k)}\} = (x_n) \cap D_1(x_1)$. 
+
+  Pick $r_1 < \min\{1, d(x_1, x_{1_i})\}_{i=1}^k$. 
+
+  Let $V_1 = D_{r_1}(x_1)$. 
+
+  Suppose that we have chosen $V_1, \ldots, V_n$, such that $j\neq k \implies \overline{V}_j \cap \overline{V}_k = \emptyset$, for every $k$, $V_k \subset D_{1/k}(x_k)$, and $\overline{V_k} \cap (x_n) = \{x_k\}$. 
+
+  $x_{n+1} \in X \setminus \bigcup_{i = 1}^n \overline{V}_i$, which is open, so we can pick $r<\frac1{n+1}$ small enough so that $D_r(x_{n+1})\subset X \setminus \bigcup_{i = 1}^n \overline{V}_i$. 
+
+  Since $(x_n)$ has no accumulation points, $D_{r}(x_{n+1})$ intersects finitely many elements of $(x_n)$, say 
+  $$D_r(x_{n+1})\cap(x_n) = \{x_{n+1}, x_{n+1}^{(1)}, \ldots, x_{n+1}^{(j)}\}$$ Pick $r_{n+1}< r$ smaller than the distance of $x_{n+1}$ to $\{x_{n+1}^{(i)}\}_{i=1}^j$
+
+  Let $V_{n+1} = D_{r_{n+1}}(x_{n+1})$.  
+
+  $$\overline{V}_{n+1} \subset D_r(x_{n+1}) \subset X\setminus \cup_{i=1}^n \overline{V}_i$$ so $\overline{V}_{n+1} \cap \overline{V}_{j} = \emptyset$, for every $j < n+1$. 
+
+  Since $r < \frac{1}{n+1}$, $V_{n+1} \subset D_{1/n+1}(x_{n+1})$. By choice of $V_{n+1}$, $\overline{V}_{n+1} \cap (x_n) = \{x_{n+1}\}$. Thus, $\{V_n\}_{n=1}^\infty$ satisfies $\ref{5.1.2}$. 
+
+  Suppose $(x_n)$ has infinitely many accumulation points. For each $n$, if $x_{n}$ is not an accumulation point, then let $U_n = V_n$. 
+
+  If $x_n$ is an accumulation point, then pick $y_n \in V_n$, distinct from $x_n$. 
+
+  Let $U_n = D_{d(x_n, y_n)}(x_n)$. $U_n \subset V_n$, since $d(x_n, y_n) < r_n$. 
+
+  Then, $y_n \not \in U_n$, but $y_n \in V_n$. Therefore, we get $\{U_n\}_{n=1}^\infty$ and $(y_{n_k})$ satisfying \ref{5.1.2} and \ref{5.1.3}.  
+\end{proof}
+\begin{defn}
+  Let $(X,d)$ be a metric space. Let $x$ be an isolated point in $X$. Let $I(x) = \sup \{ r > 0 : D_r(x) = \{x\}\}$
+\end{defn}
+\begin{lem}\label{lem:5.3}
+  Let $(X,d)$ be a metric space. Suppose that every continuous function $f:(X,d) \to \mathbb R$ is uniformly continuous. Then for every $f$, there is some $n$ such that every point in $A_n = \{x \in X : |f(x)| \ge n\}$ is isolated and $\inf_{x\in A_n} I(x) > 0$. 
+\end{lem}
+\begin{proof}
+We will proceed via proof by contradiction.
+
+Assume that there is some $f$ such that for every $n$, there is some $x_n$ in $A_n$ that is not isolated in $X$. $x_n$ is then an accumulation point. 
+
+$(x_n)$ has no accumulation points, since if $p$ was an accumulation point of $(x_n)$, then there would be some subsequence of $(x_n)$ such that $x_{n_k} \to p$. Since $f$ is continuous, $n_k \le |f(x_{n_k})| \to |f(p)| < \infty$. This is a contradiction. 
+
+Thus, by \fullref{lem:5.2}, we obtain a sequence of open sets satisfying \ref{5.1.2} and \ref{5.1.3}, and by \fullref{lem:5.1}, we get a continuous, but not uniformly continuous function.
+
+Suppose that every point in $A_n$ is isolated, but $\inf_{x\in A_n} I(x) = 0$. For every $\frac1{n}$, there is $x_n \in A_n$ such that $\inf_{x\in A_n} I(x) = 0 \le I(x_n) < \frac1{n}$. 
+
+Since $A_n = f^{-1}((-\infty, -n] \cup [n, \infty)$, $A_n$ is closed. Thus, if $(x_n)$ were to have an accumulation point, it would be some $p \in A_n$. Since $p\in A_n$, it is isolated, so $(x_n)$ does not have any accumulation points. 
+
+Since each point of $A_n$ is isolated, $I(x_n) > 0$. 
+
+Suppose that for every $m\neq n$, $d(x_n, x_m) \ge \eta > 0$, for some $\eta$. Let $N$ such that if $n > N$, then $4 I(x_n) < \frac4{n} < \eta$. Let $N < m < n$. Suppose there is some $z \in B_{I(x_n)}(x_n) \cap B_{I(x_m)}(x_m)$. Then,
+\[
+  4I(x_m) < \eta \le d(x_n, x_m) \le d(x_n, z) + d(z, x_m) \le I(x_n) + I(x_m) < 2I(x_m)
+\]
+which is a contradiction. Thus, let $U_n = D_{I(x_n)}(x_n)$, and let $y_n \in D_{2I(x_n)}(x_n)$ be distinct from $x_n$. These $U_n$ satisfy \ref{5.1.2} and \ref{5.1.3}. Thus, by \fullref{lem:5.1} we get a continuous, but not uniformly continuous function.
+
+Suppose that for any $\eta > 0$, there exist large enough $n,m$ such that $d(x_n, x_m) < \eta$. Then, for every $\frac1{k}$, we may extract a subsequence of $(x_n)$, $(x_{n_k})$, such that $d(x_{n_{2k}}, x_{n_{2k-1}}) < \frac1{k}$. Then, by \fullref{lem:5.2}, we get a sequence of neighborhoods of $(x_{n_{2k}})$ satisfying \ref{5.1.2}. Then $(x_{n_{2k-1}})$ satisfies \ref{5.1.3}, so by \fullref{lem:5.1}, we get a continuous, but not uniformly continuous function. 
+
+Thus, in all cases, we  have reached a contradiction.
+\end{proof}
+\begin{lem}\label{lem:5.4}
+  Let $(X,d)$ be a metric space. If for every real valued continuous function $f$ there is some $n$ such that every point of $A_n = \{x : |f(x)| \ge n\}$ is isolated and $\inf_{x\in A_n} I(x) > 0$, then for any collection of subsets $\{U_n\}_{n=1}^\infty$, $\bigcap_{n=1}^\infty \overline{U}_n = \emptyset \implies \bigcap_{n=1}^\infty D_\alpha(U_n) = \emptyset$ for some $\alpha$.
+\end{lem}
+\begin{proof}
+  Suppose for contradiction, that for every $\frac1{m}$, $\bigcap_{n=1}^\infty D_{1/m}(U_n) \neq \emptyset$. This implies that no $D_{1/m}(U_n)$ is the empty set, and so no $U_n$ is the empty set either. This is because $D_{1/m}(U_n) = \{x \in X : \exists y \in U_n : d(x,y) < \frac1{m}\}$ being non-empty implies that there is some $x$ and some $y\in U_n$ such that $d(x,y_n)< \frac1{m}$. 
+
+  We claim that for every $x \in \bigcap_{n=1}^\infty D_{1/m}(U_n)$, there exists $N$ large enough so that $x \not \in  \bigcap_{n=1}^\infty D_{1/N}(U_n)$. Suppose this is not the case. Then $\forall \frac1{m}$, for all $k$, there is some $y_{m,k} \in U_k$ such that $d(y_{m,k}, x) < \frac1{m}\to 0$. Thus, $x \in \overline{U}_k$, for every $k$, so $x\in \bigcap_{n=1}^\infty \overline{U}_k \neq \emptyset$, which is a contradiction.
+
+  Pick $x_1 \in \bigcap_{n=1}^\infty D_{1}(U_n)$. Since $x_1 \not\in \bigcap_{n=1}^\infty U_n = \emptyset$, pick $y_1 \in U_n \not\ni x_1$. Then $x_1$ and $y_1$ are distinct and $d(x_1, y_1) < 1$. 
+
+  Suppose that we have chosen $x_1, \ldots, x_m$ and $y_1, \ldots y_m$, all distinct, such that $x_i \in \bigcap_{n=1}^\infty D_{1/i}(U_n)$ and $d(x_i, y_i) < \frac1{i}$. There is some $x_{m+1} \in \bigcap_{n=1}^\infty D_{1/m+1}(U_n)$ distinct from all the $x_i$. If this were not the case, then $\bigcap_{n=1}^\infty D_{1/m+1}(U_n) \subset \{x_1, \ldots, x_m\}$. Pick $N$ large enough so that each $x_i \not \in \bigcap_{n=1}^\infty D_{1/N}(U_n)\subset\bigcap_{n=1}^\infty D_{1/m+1}(U_n)$, and so $\bigcap_{n=1}^\infty D_{1/N}(U_n) = \emptyset$, which is a contradiction. Pick $y_{m+1}$ in some $U_n$ so that $0 < d(y_{m+1}, x_{m+1}) < \frac1{m+1}$.
+
+  Thus, we have a sequence of distinct points $(x_n)$ and $(y_n)$ such that $x_m \in  \bigcap_{n=1}^\infty D_{1/m}(U_n)$, $x_m \neq y_m$ and $d(x_m, y_m) < \frac1{m}$. 
+
+  Suppose that $(x_n)$ has an accumulation point, say $p$. Then there is a subsequence $x_{n_k}\to p$. $x_{n_k} \in \bigcap_{m=1}^\infty D_{1/n_k}(U_m)$ implies that, for every $m$, there exists $y_{m,k} \in A_m$ such that $d(y_{m,k} x_{n_k}) < \frac1{n_k}$. Then,
+  \[
+    d(p, y_{m,k}) \le d(p, x_{n_k}) + d(x_{n_k}, y_{m,k}) < \frac1{n_k} + d(p, x_{n_k}) \to 0
+  \]
+  Thus, $y_{m,k}\to p$, and so $p \in \overline{A}_m$, for every $m$. Then $p \in \bigcap_{m=1}^\infty \overline{A}_m \neq \emptyset$, which is a contradiction. Thus, $(x_n)$ has no accumulation point. 
+
+  By \fullref{lem:5.2}, we obtain a sequence of open sets $\{U_n\}_{n=1}^\infty$ satisfying \ref{5.1.2}. Let $D_{r_n}(x_n)\subset V_n$ such that $r_n<d(x_n, y_n)$. Then $\{D_{r_n}(x_n)\}$ satisifes \ref{5.1.2} and \ref{5.1.3}, so, by \fullref{lem:5.1}, we get a function such that $f(x_n) = n$, $f(y_n) = 0$, and $f$ is continuous, but not uniformly continuous. For every $N$, if $n > N$, then there exists a neighborhood $W_n$ of $x_n$ contained in $D_{r_n}(x_n)$ such that, for every $z$ in $W_n$, $f(z) > N$. Then, $W = \bigcup_{n > N} W_n \subset A_N$. Then, 
+  $$D_{r_n}(x_n) \subset D_{1/n}(x_n)\implies x,y \in W_n\implies d(x,y)< \frac1{n} \to 0$$ 
+  Therefore, $\inf_{x \in A_n} I(x) = 0$, which is a contradiction.
+\end{proof}
+
+Now, we are ready to prove \fullref{thm:2.3}. 
+
+\begin{thm} \label{thm:5.5}
+  Let $(X,d)$ be a metric space. Suppose that every continuous real-valued function on $(X,d)$ is uniformly continuous. Then $(X,d)$ is a Lebesgue space.
+\end{thm}
+\begin{proof}
+  By \fullref{lem:5.3}, for every continuous real-valued function, there is some $n$ such that every point of $A_n$ is isolated and $\inf_{x\in A_n} I(x) > 0$. By \fullref{lem:5.4} for any countable collection of subsets $\{U_n\}_{n=1}^\infty$, we have $\bigcap_{n=1}^\infty \overline{U}_n = \emptyset \implies \bigcap_{n=1}^\infty D_\alpha(U_n) = \emptyset$ for some $\alpha$. 
+
+  Let $A$ and $B$ be closed, disjoint, nonempty subsets of $(X,d)$. Then $A \cap B = \emptyset \implies D_\alpha(A) \cap D_\alpha(B) = \emptyset$ for some $\alpha$. Thus, for every $a$ in $A$ and $b$ in $B$, $d(a,b) \ge \alpha$. Therefore, $d(A,B) \ge \alpha > 0$. By \fullref{thm:4.7}, $(X,d)$ is a Lebesgue space. 
+\end{proof}
+\begin{cor}
+  Let $(X,d)$ be a metric space. Suppose that every real-valued continuous function from $(X,d)$ is also uniformly continuous. Suppose that this is also true for any equivalent metric. Then, $(X,d)$ is compact. 
+\end{cor}
+\begin{proof}
+  By \fullref{thm:5.5}, $(X,d)$ is a Lebesgue space. Further, if $d'$ is an equivalent metric on $X$, then $(X,d')$ is a Lebesgue space. By \fullref{thm:4.12} and contraposition, $(X,d)$ is compact.  
+\end{proof}
+
+
+\section*{Acknowledgments}  I'd like to thank a few friends who helped guide me along the way of developing this paper. Namely, Vincent Solon, Enmanuel Acosta-Adames, and Deimos. I'd like to thank Prof. Bollob{\'a}s. It was in his textbook, Linear Analysis, that this question came from. Namely Chapter 6, Exercise 17. I would like to thank Professor May for organizing and running the REU,
+and providing me the opportunity to participate in the program.
+ 
+\begin{thebibliography}{9}
+  \bibitem{atsuji} Atsuji, M. (1958). Uniform continuity of continuous functions of metric spaces. Pacific Journal of Mathematics, 8(1), 11–16. https://msp.org/pjm/1958/8-1/p02.xhtml. 
+
+  \bibitem{bollobas} Bollob{\'a}s, B.(1999). Linear analysis: an introductory course (2nd ed.). Cambridge; New York: Cambridge University Press.
+
+  \bibitem{dugundji} Dugundji, J. (1951). An extension of Tietze’s theorem. Pacific Journal of Mathematics, 1(3), 353–367. https://doi.org/10.2140/pjm.1951.1.353
+
+  \bibitem{hausdorff} Hausdorff, F. (1930). Erweiterung einer Hom{\"o}omorphie. Fundamenta Mathematicae, 16(1), 353-360.
+
+  \bibitem{lefschetz} Lefschetz, S. (1942). Algebraic Topology. Am. Math. Soc. Colloquium Publications; New York, 27.
+
+  \bibitem{levine} Levine, N. (1967). On the Lebesgue property in metric spaces. Commentationes Mathematicae, 10(2), 115–118. https://doi.org/10.14708/cm.v10i2.5584
+
+  \bibitem{mont-peix} Monteiro, A. A.; Peixoto, M. M. Le nombre de Lebesgue et la continuité uniforme.Portugal. Math.10(1951), 105–113.
+
+  \bibitem{munkres} Munkres, J. (2004). Introduction to Topology 18.901. Fall. Massachusetts Institute of Technology: MIT OpenCourseWare, https://ocw.mit.edu/courses/18-901-introduction-to-topology-fall-2004/resources/notes\_g/
+
+  \bibitem{rudin} Rudin, M. E. (1969). A new proof that metric spaces are paracompact. Proceedings of the American Mathematical Society, 20(2), 603. https://doi.org/10.1090/S0002-9939-1969-0236876-3
+
+  \bibitem{c-e top} Steen, L. A., and Seebach, J. A. (1995). Counterexamples in topology (2nd ed.). New York, NY: Dover Publications. 
+
+  \bibitem{stone} A. H. Stone, Paracompactness and product spaces, Bull. Amer. Math. Soc. Volume 54, Number 10 (1948), 977-982. 
+
+  \bibitem{willard} Willard, S. (2004). General topology. Mineola, N.Y: Dover Publications.
+\end{thebibliography}
+
+\end{document}
+
